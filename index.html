@@ -92,18 +92,27 @@
         #main-nav {
             position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
             padding: 18px 40px; display: flex; align-items: center; justify-content: space-between;
-            transition: all 0.4s ease; border-bottom: 1px solid transparent;
+            transition: all 0.4s ease;
+            background: var(--bg-primary);
+            background-image:
+                linear-gradient(rgba(0,255,65,0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,255,65,0.02) 1px, transparent 1px);
+            background-size: 50px 50px;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border);
+            box-shadow: 0 1px 0 rgba(0,255,65,0.06);
         }
         #main-nav.scrolled {
-            background: rgba(3,10,3,0.9); backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border);
+            background-color: rgba(7,18,7,0.98);
+            box-shadow: 0 4px 24px rgba(0,0,0,0.4);
         }
         .nav-brand {
             font-family: var(--font-mono); font-size: 18px; font-weight: 700;
             color: var(--cyan); letter-spacing: 2px;
         }
         .nav-cursor { animation: blink 0.8s step-end infinite; }
-        .nav-links { display: flex; gap: 32px; }
+        .nav-links { display: flex; gap: 22px; flex-wrap: wrap; justify-content: flex-end; }
         .nav-link {
             font-family: var(--font-mono); font-size: 11px; letter-spacing: 1.5px;
             color: var(--text-muted); text-decoration: none; text-transform: uppercase;
@@ -363,14 +372,20 @@
 
         .decode-badge {
             position: absolute; top: 14px; right: 14px;
-            font-family: var(--font-mono); font-size: 9px; letter-spacing: 1.5px;
-            color: var(--cyan-dim); opacity: 0.6;
-            display: flex; align-items: center; gap: 5px;
-            transition: all 0.3s ease; padding: 4px 10px;
-            background: rgba(0,255,65,0.06); border-radius: 4px;
+            font-family: var(--font-mono); font-size: 10px; font-weight: 600;
+            letter-spacing: 0.5px; white-space: nowrap;
+            color: var(--cyan); opacity: 1;
+            display: flex; align-items: center; gap: 6px;
+            transition: all 0.3s ease; padding: 6px 12px;
+            background: rgba(0,255,65,0.14);
+            border: 1px solid rgba(0,255,65,0.35);
+            border-radius: 6px;
+            text-shadow: 0 0 12px rgba(0,255,65,0.35);
         }
         .scramble-card:hover .decode-badge {
-            opacity: 1; color: var(--cyan); background: rgba(0,255,65,0.1);
+            color: #fff; background: rgba(0,255,65,0.22);
+            border-color: rgba(0,255,65,0.55);
+            box-shadow: 0 0 16px rgba(0,255,65,0.2);
         }
         .scramble-card.decoding .decode-badge {
             color: var(--amber); background: rgba(232,168,32,0.08);
@@ -657,6 +672,7 @@
             <a href="#experience" class="nav-link" data-section="experience">Experience</a>
             <a href="#projects" class="nav-link" data-section="projects">Projects</a>
             <a href="#skills" class="nav-link" data-section="skills">Skills</a>
+            <a href="#background" class="nav-link" data-section="background">Background</a>
             <a href="#contact" class="nav-link" data-section="contact">Contact</a>
         </div>
         <button class="nav-mobile-toggle" id="nav-toggle" aria-label="Toggle menu">
@@ -670,6 +686,7 @@
         <a href="#experience" class="mobile-nav-link">Experience</a>
         <a href="#projects" class="mobile-nav-link">Projects</a>
         <a href="#skills" class="mobile-nav-link">Skills</a>
+        <a href="#background" class="mobile-nav-link">Background</a>
         <a href="#contact" class="mobile-nav-link">Contact</a>
     </div>
 
@@ -684,7 +701,7 @@
                 </div>
                 <p class="hero-intro" id="hero-intro">
                     I build interfaces people actually enjoy using, connect code to the physical world,
-                    and ship systems that solve real problems. Click any card below to decode what I do.
+                    and ship systems that solve real problems. Tap any card below to decode what I do.
                 </p>
                 <div class="hero-meta" id="hero-meta">
                     <span><i class="fas fa-map-marker-alt"></i> Riyadh, Saudi Arabia</span>
@@ -716,21 +733,21 @@
                 <div class="cap-status"><span class="status-dot"></span> ACTIVE</div>
                 <h3 class="cap-title scramble-text">I Build Interfaces</h3>
                 <p class="cap-desc scramble-text">React Native, HTML/CSS/JavaScript, Figma — I craft mobile and web UI flows that feel polished and intuitive.</p>
-                <div class="decode-badge"><i class="fas fa-lock"></i> DECODE</div>
+                <div class="decode-badge"><i class="fas fa-lock"></i> Tap to Decode</div>
             </div>
             <div class="cap-card scramble-card reveal reveal-delay-2" data-accent="amber">
                 <div class="cap-module">MOD-02</div>
                 <div class="cap-status"><span class="status-dot"></span> ACTIVE</div>
                 <h3 class="cap-title scramble-text">I Bridge Software + Hardware</h3>
                 <p class="cap-desc scramble-text">Arduino WiFi, sensors, relays, Node.js servers — I connect digital logic to physical hardware and debug the full stack.</p>
-                <div class="decode-badge"><i class="fas fa-lock"></i> DECODE</div>
+                <div class="decode-badge"><i class="fas fa-lock"></i> Tap to Decode</div>
             </div>
             <div class="cap-card scramble-card reveal reveal-delay-3" data-accent="green">
                 <div class="cap-module">MOD-03</div>
                 <div class="cap-status"><span class="status-dot"></span> ACTIVE</div>
                 <h3 class="cap-title scramble-text">I Ship Practical Systems</h3>
                 <p class="cap-desc scramble-text">VisitorMG/VMS booking, QR/NFC check-in/out, guard scanning, admin portals — I deliver end-to-end working systems, not just prototypes.</p>
-                <div class="decode-badge"><i class="fas fa-lock"></i> DECODE</div>
+                <div class="decode-badge"><i class="fas fa-lock"></i> Tap to Decode</div>
             </div>
         </div>
     </section>
@@ -791,7 +808,7 @@
                 <div class="project-techs">
                     <span>React Native</span><span>Node.js</span><span>Express</span><span>QR/NFC</span>
                 </div>
-                <div class="decode-badge"><i class="fas fa-lock"></i> DECODE</div>
+                <div class="decode-badge"><i class="fas fa-lock"></i> Tap to Decode</div>
             </div>
             <div class="project-card scramble-card reveal reveal-delay-2" data-accent="amber">
                 <div class="project-header">
@@ -804,7 +821,7 @@
                 <div class="project-techs">
                     <span>Arduino</span><span>Relays</span><span>Sensors</span><span>Automation</span>
                 </div>
-                <div class="decode-badge"><i class="fas fa-lock"></i> DECODE</div>
+                <div class="decode-badge"><i class="fas fa-lock"></i> Tap to Decode</div>
             </div>
             <div class="project-card scramble-card reveal reveal-delay-3" data-accent="green">
                 <div class="project-header">
@@ -817,7 +834,7 @@
                 <div class="project-techs">
                     <span>Inverse Kinematics</span><span>ArUco</span><span>MediaPipe</span>
                 </div>
-                <div class="decode-badge"><i class="fas fa-lock"></i> DECODE</div>
+                <div class="decode-badge"><i class="fas fa-lock"></i> Tap to Decode</div>
             </div>
             <div class="project-card scramble-card reveal reveal-delay-4" data-accent="pink">
                 <div class="project-header">
@@ -830,7 +847,7 @@
                 <div class="project-techs">
                     <span>Arduino</span><span>Node.js</span><span>Sensors</span><span>Web Alerts</span>
                 </div>
-                <div class="decode-badge"><i class="fas fa-lock"></i> DECODE</div>
+                <div class="decode-badge"><i class="fas fa-lock"></i> Tap to Decode</div>
             </div>
             <div class="project-card scramble-card reveal reveal-delay-5" data-accent="gold">
                 <div class="project-header">
@@ -843,7 +860,7 @@
                 <div class="project-techs">
                     <span>Prototyping</span><span>Research</span><span>Testing</span>
                 </div>
-                <div class="decode-badge"><i class="fas fa-lock"></i> DECODE</div>
+                <div class="decode-badge"><i class="fas fa-lock"></i> Tap to Decode</div>
             </div>
         </div>
     </section>
@@ -1172,7 +1189,7 @@
         (function() {
             const nav = document.getElementById('main-nav');
             const links = document.querySelectorAll('.nav-link');
-            const sections = ['hero', 'capabilities', 'experience', 'projects', 'skills', 'contact'];
+            const sections = ['hero', 'capabilities', 'experience', 'projects', 'skills', 'background', 'contact'];
             const toggle = document.getElementById('nav-toggle');
             const mobileMenu = document.getElementById('mobile-menu');
             const mobileLinks = document.querySelectorAll('.mobile-nav-link');
