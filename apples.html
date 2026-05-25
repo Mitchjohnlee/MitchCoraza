@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MITCH ALINGAYAO — Systems × Interfaces × Prototypes</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500;600;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#050505;--bg2:#0a0a0a;--fg:#f0f0f0;--muted:#b8b8b8;--dim:#888;
+  --sub:#c8c8c8;--border:rgba(255,255,255,0.1);--border-h:rgba(255,255,255,0.3);
+  --blue:#4a9eff;--green:#34d399;--accent:rgba(74,158,255,0.12);
+  --font-display:'Bebas Neue',sans-serif;--font-heading:'Syne',sans-serif;
+  --font-body:'DM Sans',sans-serif;--font-mono:'JetBrains Mono',monospace;
+  --font-tech:'Share Tech Mono',monospace;
+}
+html{scroll-behavior:smooth;scrollbar-width:thin;scrollbar-color:#444 var(--bg)}
+body{background:var(--bg);color:var(--fg);font-family:var(--font-body);overflow-x:hidden;cursor:none}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:#444;border-radius:2px}
+
+.custom-cursor{position:fixed;width:16px;height:16px;border:1.5px solid rgba(255,255,255,0.5);border-radius:50%;pointer-events:none;z-index:10001;transform:translate(-50%,-50%);transition:width 0.3s,height 0.3s,border-color 0.3s,background 0.3s}
+.custom-cursor.hovering{width:48px;height:48px;border-color:var(--blue);background:rgba(74,158,255,0.06)}
+.cursor-dot{position:fixed;width:4px;height:4px;background:#fff;border-radius:50%;pointer-events:none;z-index:10002;transform:translate(-50%,-50%)}
+.cursor-glow{position:fixed;width:700px;height:700px;border-radius:50%;pointer-events:none;z-index:1;
+  background:radial-gradient(circle,rgba(74,158,255,0.06) 0%,rgba(74,158,255,0.015) 40%,transparent 70%);
+  transform:translate(-50%,-50%)}
+
+#grain-canvas{position:fixed;inset:0;z-index:9999;pointer-events:none;opacity:0.05;mix-blend-mode:overlay}
+.scanlines{position:fixed;inset:0;z-index:9998;pointer-events:none;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.05) 2px,rgba(0,0,0,0.05) 4px);opacity:0.5}
+.grid-overlay{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:linear-gradient(rgba(255,255,255,0.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.015) 1px,transparent 1px);background-size:80px 80px}
+
+.ch-hover{position:relative}
+.ch-hover .ch-box{position:absolute;inset:-4px;opacity:0;transition:opacity 0.35s;pointer-events:none}
+.ch-hover:hover .ch-box{opacity:1}
+.ch-box .ch-corner{position:absolute;width:6px;height:6px}
+.ch-box .ch-corner.tl{top:0;left:0;border-top:1px solid var(--blue);border-left:1px solid var(--blue)}
+.ch-box .ch-corner.tr{top:0;right:0;border-top:1px solid var(--blue);border-right:1px solid var(--blue)}
+.ch-box .ch-corner.bl{bottom:0;left:0;border-bottom:1px solid var(--blue);border-left:1px solid var(--blue)}
+.ch-box .ch-corner.br{bottom:0;right:0;border-bottom:1px solid var(--blue);border-right:1px solid var(--blue)}
+.ch-box .ch-border{position:absolute;inset:0;border:1px solid rgba(74,158,255,0.15)}
+
+.sr{opacity:0;filter:blur(10px);transform:translateY(28px);transition:opacity 0.85s cubic-bezier(0.16,1,0.3,1),filter 0.85s cubic-bezier(0.16,1,0.3,1),transform 0.85s cubic-bezier(0.16,1,0.3,1)}
+.sr.visible{opacity:1;filter:blur(0);transform:translateY(0)}
+.sr-d1{transition-delay:0.08s}.sr-d2{transition-delay:0.16s}.sr-d3{transition-delay:0.24s}
+.sr-d4{transition-delay:0.32s}.sr-d5{transition-delay:0.4s}.sr-d6{transition-delay:0.48s}
+.sr-d7{transition-delay:0.56s}.sr-d8{transition-delay:0.64s}
+
+.top-bar{position:fixed;top:0;left:0;right:0;z-index:1000;height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 40px;border-bottom:1px solid var(--border);background:rgba(5,5,5,0.92);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px)}
+.top-bar-left{display:flex;align-items:center;gap:14px}
+.logo-mark{display:flex;align-items:flex-end;gap:3px;height:22px}
+.logo-mark span{display:block;width:4px;background:var(--fg);border-radius:1px}
+.logo-mark span:nth-child(1){height:18px;transform:skewX(-8deg)}
+.logo-mark span:nth-child(2){height:12px;transform:skewX(-8deg)}
+.logo-mark span:nth-child(3){height:22px;transform:skewX(-8deg)}
+.top-name{font-family:var(--font-heading);font-weight:700;font-size:13px;letter-spacing:3px;color:var(--fg)}
+.equalizer{display:flex;align-items:flex-end;gap:2px;height:16px;margin-left:4px}
+.equalizer span{display:block;width:2px;background:var(--blue);border-radius:1px;animation:eqBounce 0.8s ease-in-out infinite alternate}
+.equalizer span:nth-child(1){height:6px;animation-delay:0s}
+.equalizer span:nth-child(2){height:12px;animation-delay:0.15s}
+.equalizer span:nth-child(3){height:8px;animation-delay:0.3s}
+.equalizer span:nth-child(4){height:14px;animation-delay:0.1s}
+.equalizer span:nth-child(5){height:5px;animation-delay:0.25s}
+@keyframes eqBounce{0%{transform:scaleY(0.4)}100%{transform:scaleY(1)}}
+.top-bar-right{display:flex;align-items:center;gap:4px}
+.nav-link{font-family:var(--font-tech);font-size:12px;letter-spacing:2px;color:var(--dim);text-decoration:none;transition:color 0.3s;display:inline-flex;align-items:center;gap:4px;cursor:none;text-transform:uppercase;padding:6px 12px;position:relative}
+.nav-link:hover{color:var(--fg)}
+.nav-link .arrow{font-size:8px;opacity:0.4;transition:opacity 0.3s}
+.nav-link:hover .arrow{opacity:1}
+
+.hero{position:relative;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;padding:80px 60px 120px}
+.floating-icons{position:absolute;inset:0;pointer-events:none;z-index:0}
+.float-icon{position:absolute;transition:transform 0.15s linear}
+.float-icon svg{filter:drop-shadow(0 0 25px rgba(74,158,255,0.12))}
+.fi-1{width:120px;height:120px;top:8%;left:5%;animation:drift1 20s ease-in-out infinite;opacity:0.2}
+.fi-2{width:110px;height:110px;top:15%;right:8%;animation:drift2 25s ease-in-out infinite;opacity:0.18}
+.fi-3{width:100px;height:100px;top:50%;left:3%;animation:drift3 22s ease-in-out infinite;opacity:0.17}
+.fi-4{width:130px;height:130px;top:55%;right:4%;animation:drift1 28s ease-in-out infinite reverse;opacity:0.19}
+.fi-5{width:90px;height:90px;top:28%;left:15%;animation:drift2 18s ease-in-out infinite;opacity:0.16}
+.fi-6{width:100px;height:100px;top:65%;left:18%;animation:drift3 24s ease-in-out infinite reverse;opacity:0.17}
+.fi-7{width:115px;height:115px;top:22%;right:18%;animation:drift1 26s ease-in-out infinite;opacity:0.16}
+.fi-8{width:80px;height:80px;top:72%;right:15%;animation:drift2 19s ease-in-out infinite reverse;opacity:0.15}
+.fi-9{width:95px;height:95px;top:40%;right:25%;animation:drift3 21s ease-in-out infinite;opacity:0.14}
+.fi-10{width:85px;height:85px;top:80%;left:30%;animation:drift1 23s ease-in-out infinite reverse;opacity:0.16}
+@keyframes drift1{0%,100%{transform:translate(0,0) rotate(0deg)}25%{transform:translate(20px,-25px) rotate(5deg)}50%{transform:translate(-15px,20px) rotate(-3deg)}75%{transform:translate(25px,15px) rotate(4deg)}}
+@keyframes drift2{0%,100%{transform:translate(0,0) rotate(0deg)}33%{transform:translate(-25px,20px) rotate(-5deg)}66%{transform:translate(20px,-15px) rotate(3deg)}}
+@keyframes drift3{0%,100%{transform:translate(0,0) rotate(0deg)}50%{transform:translate(18px,25px) rotate(6deg)}}
+
+.hero-logo{margin-bottom:28px;opacity:0.7}
+.hero-logo .logo-mark span{width:6px}
+.hero-logo .logo-mark span:nth-child(1){height:28px}
+.hero-logo .logo-mark span:nth-child(2){height:18px}
+.hero-logo .logo-mark span:nth-child(3){height:34px}
+.hero-heading{text-align:center;margin-bottom:8px;position:relative;z-index:2}
+.hero-title{font-family:var(--font-heading);font-size:clamp(13px,1.5vw,17px);letter-spacing:6px;color:var(--blue);font-weight:600;margin-bottom:20px;text-transform:uppercase}
+.hero-line{font-family:var(--font-display);font-size:clamp(36px,6vw,80px);letter-spacing:10px;line-height:1.05;color:var(--fg)}
+.hero-line-2{font-family:var(--font-display);font-size:clamp(30px,5vw,68px);letter-spacing:8px;line-height:1.1;color:var(--muted);margin-top:6px}
+.hero-subtitle-wrap{text-align:center;margin-top:28px;position:relative;z-index:2}
+.hero-subtitle{font-family:var(--font-body);font-size:clamp(14px,1.4vw,17px);color:var(--sub);max-width:640px;text-align:center;line-height:1.75;font-weight:400}
+.hero-cta{margin-top:44px;position:relative;z-index:2}
+.cta-btn{position:relative;display:inline-flex;align-items:center;gap:10px;padding:16px 40px;background:transparent;border:1px solid var(--border-h);color:var(--fg);font-family:var(--font-tech);font-size:12px;letter-spacing:3px;cursor:none;transition:all 0.4s;text-transform:uppercase}
+.cta-btn::before,.cta-btn::after,.cta-btn .corner-bl,.cta-btn .corner-br{content:'';position:absolute;width:10px;height:10px}
+.cta-btn::before{top:-1px;left:-1px;border-top:1px solid var(--blue);border-left:1px solid var(--blue)}
+.cta-btn::after{top:-1px;right:-1px;border-top:1px solid var(--blue);border-right:1px solid var(--blue)}
+.cta-btn .corner-bl{bottom:-1px;left:-1px;border-bottom:1px solid var(--blue);border-left:1px solid var(--blue)}
+.cta-btn .corner-br{bottom:-1px;right:-1px;border-bottom:1px solid var(--blue);border-right:1px solid var(--blue)}
+.cta-btn:hover{background:rgba(255,255,255,0.04);border-color:rgba(255,255,255,0.5)}
+.cta-btn:hover::before,.cta-btn:hover::after,.cta-btn:hover .corner-bl,.cta-btn:hover .corner-br{width:14px;height:14px}
+
+.scroll-indicator{position:absolute;bottom:100px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:10px;z-index:2}
+.mouse-icon{width:20px;height:32px;border:1.5px solid var(--dim);border-radius:10px;position:relative}
+.mouse-icon::after{content:'';position:absolute;top:6px;left:50%;transform:translateX(-50%);width:2px;height:6px;background:var(--muted);border-radius:1px;animation:scrollBounce 1.8s ease-in-out infinite}
+@keyframes scrollBounce{0%,100%{transform:translateX(-50%) translateY(0);opacity:1}50%{transform:translateX(-50%) translateY(8px);opacity:0.3}}
+.scroll-text{font-family:var(--font-mono);font-size:9px;letter-spacing:3px;color:var(--dim)}
+
+.section{position:relative;padding:120px 60px;z-index:2}
+.section-label{font-family:var(--font-mono);font-size:10px;letter-spacing:4px;color:var(--blue);margin-bottom:12px;text-transform:uppercase}
+.section-title{font-family:var(--font-display);font-size:clamp(40px,5.5vw,68px);letter-spacing:6px;color:var(--fg);margin-bottom:16px}
+.section-subtitle{font-family:var(--font-body);font-size:16px;color:var(--sub);max-width:620px;line-height:1.75;font-weight:400}
+
+.build-proof{padding-top:160px}
+.build-proof-header{display:flex;align-items:flex-start;justify-content:space-between;gap:48px;flex-wrap:wrap}
+.build-proof-header-left{flex:1;min-width:320px}
+.company-logos{display:flex;align-items:center;gap:32px;flex-shrink:0;padding-top:16px;flex-wrap:wrap}
+.company-logo-item{display:flex;flex-direction:column;align-items:center;gap:8px;transition:opacity 0.3s,transform 0.3s;cursor:none;opacity:0.55}
+.company-logo-item:hover{opacity:1;transform:translateY(-2px)}
+.company-logo-item img{height:48px;width:auto;object-fit:contain;filter:grayscale(0.3) brightness(1.2);transition:filter 0.3s}
+.company-logo-item:hover img{filter:grayscale(0) brightness(1.4)}
+.company-logo-item .logo-label{font-family:var(--font-tech);font-size:7px;letter-spacing:2px;color:var(--dim);text-transform:uppercase;white-space:nowrap}
+.company-logo-divider{width:1px;height:36px;background:var(--border);flex-shrink:0}
+
+.project-logos{display:flex;flex-wrap:wrap;justify-content:center;gap:28px 48px;margin:48px 0 80px;padding:24px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.project-logo-item{font-family:var(--font-tech);font-size:11px;letter-spacing:2px;color:var(--muted);transition:color 0.3s;cursor:none}
+.project-logo-item:hover{color:var(--fg)}
+.project-logo-item .dot{display:inline-block;width:5px;height:5px;background:var(--blue);border-radius:50%;margin-right:8px;vertical-align:middle}
+
+.project-card{display:grid;grid-template-columns:1fr 1.4fr;gap:56px;align-items:center;margin-bottom:120px;position:relative}
+.project-card:nth-child(even){direction:rtl}
+.project-card:nth-child(even)>*{direction:ltr}
+.project-text{padding-right:24px}
+.project-card:nth-child(even) .project-text{padding-right:0;padding-left:24px}
+.project-tag{font-family:var(--font-mono);font-size:10px;letter-spacing:3px;color:var(--blue);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.project-tag::before{content:'';width:18px;height:1px;background:var(--blue)}
+.project-name{font-family:var(--font-display);font-size:clamp(30px,3.8vw,52px);letter-spacing:4px;color:var(--fg);margin-bottom:18px;line-height:1.1}
+.project-desc{font-family:var(--font-body);font-size:15px;color:var(--sub);line-height:1.8;margin-bottom:30px;font-weight:400;max-width:460px}
+
+.project-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 24px;border:1px solid var(--border-h);background:transparent;color:var(--muted);font-family:var(--font-tech);font-size:11px;letter-spacing:2.5px;cursor:none;transition:all 0.3s;position:relative;overflow:hidden;text-transform:uppercase}
+.project-btn::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(74,158,255,0.08),transparent);transform:translateX(-100%);transition:transform 0.5s}
+.project-btn:hover{color:var(--fg);border-color:var(--blue)}
+.project-btn:hover::after{transform:translateX(100%)}
+
+.project-mockup{position:relative;border:1px solid var(--border);border-radius:6px;overflow:hidden;aspect-ratio:16/10;background:var(--bg2);transform-style:preserve-3d;transition:transform 0.15s ease-out}
+.project-mockup img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.6s ease,filter 0.6s ease}
+.project-mockup:hover img{transform:scale(1.03);filter:brightness(1.1)}
+.mockup-crosshair{position:absolute;width:14px;height:14px;z-index:3}
+.mockup-crosshair.tl{top:10px;left:10px;border-top:1.5px solid var(--blue);border-left:1.5px solid var(--blue)}
+.mockup-crosshair.tr{top:10px;right:10px;border-top:1.5px solid var(--blue);border-right:1.5px solid var(--blue)}
+.mockup-crosshair.bl{bottom:10px;left:10px;border-bottom:1.5px solid var(--blue);border-left:1.5px solid var(--blue)}
+.mockup-crosshair.br{bottom:10px;right:10px;border-bottom:1.5px solid var(--blue);border-right:1.5px solid var(--blue)}
+.mockup-label{position:absolute;top:14px;right:44px;font-family:var(--font-tech);font-size:8px;letter-spacing:2px;color:var(--muted);opacity:0.7;z-index:3;background:rgba(0,0,0,0.6);padding:2px 8px;border-radius:2px}
+.mockup-hover-label{position:absolute;bottom:18px;right:18px;font-family:var(--font-tech);font-size:9px;letter-spacing:2px;color:var(--blue);border:1px solid rgba(74,158,255,0.4);padding:5px 12px;opacity:0;transition:opacity 0.3s;z-index:3;background:rgba(0,0,0,0.7);backdrop-filter:blur(8px)}
+.project-mockup:hover .mockup-hover-label{opacity:1}
+.dual-images{display:grid;grid-template-columns:1fr 1fr;gap:4px;height:100%}
+.dual-images img{width:100%;height:100%;object-fit:cover}
+
+.experience-section{padding:160px 60px 80px;position:relative}
+.exp-grid{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:48px;margin-top:56px;position:relative;z-index:2}
+.exp-col{border-left:2px solid rgba(74,158,255,0.2);padding-left:28px}
+.exp-col-title{font-family:var(--font-tech);font-size:11px;letter-spacing:4px;color:var(--blue);margin-bottom:32px;font-weight:400;text-transform:uppercase}
+.exp-item{margin-bottom:28px;position:relative}
+.exp-num{font-family:var(--font-display);font-size:36px;letter-spacing:2px;color:rgba(74,158,255,0.3);margin-bottom:2px;line-height:1}
+.exp-date{font-family:var(--font-tech);font-size:11px;letter-spacing:1.5px;color:var(--blue);margin-bottom:4px}
+.exp-role{font-family:var(--font-heading);font-size:15px;font-weight:700;letter-spacing:0.5px;color:var(--fg);margin-bottom:3px}
+.exp-company{font-family:var(--font-body);font-size:13px;color:var(--muted);margin-bottom:10px;font-weight:500}
+.exp-detail{font-family:var(--font-body);font-size:13px;color:var(--sub);line-height:1.75;font-weight:400}
+.exp-divider{width:100%;height:1px;background:linear-gradient(90deg,rgba(74,158,255,0.15),transparent);margin:24px 0}
+.skill-group{margin-bottom:18px}
+.skill-group-title{font-family:var(--font-heading);font-size:12px;letter-spacing:1.5px;color:var(--fg);margin-bottom:6px;font-weight:700}
+.skill-list{font-family:var(--font-body);font-size:13px;color:var(--sub);line-height:1.7;font-weight:400}
+.exp-project-item{display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--border);transition:all 0.3s;cursor:none}
+.exp-project-item:hover{padding-left:10px;border-color:rgba(74,158,255,0.3)}
+.exp-project-name{font-family:var(--font-body);font-size:13px;color:var(--muted);font-weight:500}
+.exp-project-btn{font-family:var(--font-tech);font-size:9px;letter-spacing:2px;color:var(--blue);border:1px solid rgba(74,158,255,0.3);padding:4px 12px;background:transparent;cursor:none;opacity:0;transition:opacity 0.3s}
+.exp-project-item:hover .exp-project-btn{opacity:1}
+
+.giant-name-section{position:relative;padding:200px 60px 300px;overflow:hidden;display:flex;align-items:center;justify-content:center;min-height:80vh}
+.giant-name{font-family:var(--font-display);font-size:clamp(90px,17vw,300px);letter-spacing:clamp(12px,3.5vw,50px);color:rgba(255,255,255,0.04);white-space:nowrap;position:absolute;user-select:none;line-height:0.85}
+.giant-name-fill{font-family:var(--font-display);font-size:clamp(90px,17vw,300px);letter-spacing:clamp(12px,3.5vw,50px);color:transparent;-webkit-text-stroke:1.5px rgba(255,255,255,0.06);white-space:nowrap;position:absolute;user-select:none;line-height:0.85;top:50%;left:50%;transform:translate(-50%,-50%)}
+.footer-content{position:relative;z-index:2;text-align:center}
+.footer-tagline{font-family:var(--font-tech);font-size:11px;letter-spacing:5px;color:var(--dim);margin-bottom:14px}
+.footer-email{font-family:var(--font-heading);font-size:clamp(18px,2.5vw,28px);letter-spacing:3px;color:var(--fg);text-decoration:none;position:relative;transition:color 0.3s;cursor:none}
+.footer-email:hover{color:var(--blue)}
+.footer-email::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--blue);transition:width 0.4s}
+.footer-email:hover::after{width:100%}
+.footer-socials{display:flex;gap:20px;justify-content:center;margin-top:36px}
+.footer-social{font-family:var(--font-tech);font-size:10px;letter-spacing:2px;color:var(--muted);text-decoration:none;transition:color 0.3s,border-color 0.3s;border:1px solid var(--border);padding:10px 24px;cursor:none}
+.footer-social:hover{color:var(--fg);border-color:var(--border-h)}
+
+.bottom-bar{position:fixed;bottom:0;left:0;right:0;z-index:1000;min-height:52px;display:flex;align-items:center;justify-content:space-between;padding:0 40px;border-top:1px solid var(--border);background:rgba(5,5,5,0.92);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px)}
+.bottom-left{display:flex;align-items:center;gap:14px;flex:1}
+.bottom-avatar{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--blue),#1e3a5f);border:1px solid rgba(74,158,255,0.3);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:var(--font-heading);font-size:9px;color:var(--fg);font-weight:700}
+.bottom-msg{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:12px 12px 12px 2px;padding:6px 14px;max-width:320px}
+.bottom-msg-icon{width:4px;height:4px;background:var(--green);border-radius:50%;flex-shrink:0;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+.bottom-msg span{font-family:var(--font-body);font-size:11px;color:var(--muted);line-height:1.4}
+.bottom-tickers{display:flex;gap:16px;margin-left:16px;flex-shrink:0}
+.ticker{display:flex;align-items:center;gap:5px}
+.ticker .dot{width:4px;height:4px;border-radius:50%}
+.ticker span{font-family:var(--font-tech);font-size:8px;letter-spacing:1.5px;color:var(--dim)}
+.bottom-center{display:flex;flex-direction:column;align-items:center;gap:2px;flex-shrink:0}
+.bottom-center .scroll-text{font-size:7px;color:var(--dim)}
+.bottom-right{display:flex;gap:22px;flex-shrink:0}
+.hud-item{font-family:var(--font-tech);font-size:9px;letter-spacing:1px;color:var(--dim)}
+.hud-item .val{color:var(--muted)}
+
+.sensor-grid{padding:20px;display:flex;gap:16px;height:100%}
+.sensor-left{flex:1;display:flex;flex-direction:column;gap:8px}
+.sensor-reading{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:rgba(52,211,153,0.03);border:1px solid rgba(52,211,153,0.1);border-radius:4px}
+.sensor-reading .label{font-family:var(--font-tech);font-size:8px;letter-spacing:1.5px;color:var(--muted)}
+.sensor-reading .value{font-family:var(--font-tech);font-size:11px;font-weight:600}
+.sensor-alerts{width:140px;display:flex;flex-direction:column;gap:6px}
+.sensor-alert{padding:6px 8px;border-radius:3px;display:flex;align-items:center;gap:6px;font-family:var(--font-tech);font-size:7px;letter-spacing:1px;color:var(--dim)}
+
+@media(max-width:1200px){
+  .project-card{grid-template-columns:1fr;gap:28px}
+  .project-card:nth-child(even){direction:ltr}
+  .project-text{padding-right:0}
+  .project-card:nth-child(even) .project-text{padding-left:0}
+  .section,.experience-section{padding:80px 32px}
+  .build-proof-header{flex-direction:column}
+  .company-logos{padding-top:0}
+}
+@media(max-width:1024px){
+  .exp-grid{grid-template-columns:1fr;gap:40px}
+  .bottom-tickers{display:none}
+}
+@media(max-width:768px){
+  .top-bar{padding:0 16px}
+  .nav-link{font-size:10px;letter-spacing:1.5px;padding:4px 8px}
+  .section,.experience-section{padding:80px 20px}
+  .bottom-bar{padding:0 16px}
+  .bottom-right{gap:12px}
+  .hud-item{font-size:7px}
+  .project-logos{gap:16px 24px}
+  .footer-socials{flex-wrap:wrap;gap:12px}
+  .bottom-msg{display:none}
+  .custom-cursor,.cursor-dot{display:none}
+  body{cursor:auto}
+  .hero{padding:80px 20px 120px}
+  .company-logos{gap:20px}
+  .company-logo-item img{height:36px}
+  .company-logo-divider{height:28px}
+}
+</style>
+</head>
+<body>
+
+<div class="custom-cursor" id="customCursor"></div>
+<div class="cursor-dot" id="cursorDot"></div>
+
+<canvas id="grain-canvas"></canvas>
+<div class="scanlines"></div>
+<div class="grid-overlay"></div>
+<div class="cursor-glow" id="cursorGlow"></div>
+
+<!-- ═══ TOP BAR ═══ -->
+<header class="top-bar">
+  <div class="top-bar-left">
+    <div class="logo-mark"><span></span><span></span><span></span></div>
+    <span class="top-name">MITCH ALINGAYAO</span>
+    <div class="equalizer"><span></span><span></span><span></span><span></span><span></span></div>
+  </div>
+  <nav class="top-bar-right">
+    <a href="#" class="nav-link ch-hover hoverable" data-scramble="CV"><span class="s-text">CV</span><div class="ch-box"><div class="ch-corner tl"></div><div class="ch-corner tr"></div><div class="ch-corner bl"></div><div class="ch-corner br"></div><div class="ch-border"></div></div></a>
+    <a href="#" class="nav-link ch-hover hoverable" data-scramble="GITHUB ↗"><span class="s-text">GITHUB ↗</span><div class="ch-box"><div class="ch-corner tl"></div><div class="ch-corner tr"></div><div class="ch-corner bl"></div><div class="ch-corner br"></div><div class="ch-border"></div></div></a>
+    <a href="#projects" class="nav-link ch-hover hoverable" data-scramble="PROJECTS"><span class="s-text">PROJECTS</span><div class="ch-box"><div class="ch-corner tl"></div><div class="ch-corner tr"></div><div class="ch-corner bl"></div><div class="ch-corner br"></div><div class="ch-border"></div></div></a>
+    <a href="#" class="nav-link ch-hover hoverable" data-scramble="LINKEDIN ↗"><span class="s-text">LINKEDIN ↗</span><div class="ch-box"><div class="ch-corner tl"></div><div class="ch-corner tr"></div><div class="ch-corner bl"></div><div class="ch-corner br"></div><div class="ch-border"></div></div></a>
+    <a href="mailto:mitchalingayao@gmail.com" class="nav-link ch-hover hoverable" data-scramble="MAIL"><span class="s-text">MAIL</span><div class="ch-box"><div class="ch-corner tl"></div><div class="ch-corner tr"></div><div class="ch-corner bl"></div><div class="ch-corner br"></div><div class="ch-border"></div></div></a>
+  </nav>
+</header>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <div class="floating-icons">
+    <div class="float-icon fi-1 sr"><svg viewBox="0 0 80 80" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="1.8"><polyline points="20,28 8,40 20,52"/><polyline points="60,28 72,40 60,52"/><line x1="35" y1="58" x2="45" y2="22"/></svg></div>
+    <div class="float-icon fi-2 sr sr-d2"><svg viewBox="0 0 70 70" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="1.8"><rect x="28" y="50" width="14" height="8" rx="1"/><line x1="35" y1="50" x2="35" y2="35"/><line x1="35" y1="35" x2="50" y2="22"/><circle cx="35" cy="35" r="3"/><circle cx="50" cy="22" r="3"/><line x1="50" y1="22" x2="58" y2="30"/></svg></div>
+    <div class="float-icon fi-3 sr sr-d4"><svg viewBox="0 0 60 60" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="1.5"><rect x="8" y="8" width="16" height="16"/><rect x="10" y="10" width="5" height="5" fill="rgba(255,255,255,0.5)"/><rect x="36" y="8" width="16" height="16"/><rect x="38" y="10" width="5" height="5" fill="rgba(255,255,255,0.5)"/><rect x="8" y="36" width="16" height="16"/><rect x="10" y="38" width="5" height="5" fill="rgba(255,255,255,0.5)"/><rect x="36" y="36" width="8" height="8"/><rect x="46" y="36" width="6" height="6"/><rect x="36" y="46" width="6" height="6"/></svg></div>
+    <div class="float-icon fi-4 sr sr-d1"><svg viewBox="0 0 90 90" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="1.8"><circle cx="45" cy="45" r="6" fill="rgba(74,158,255,0.2)"/><path d="M30,45 Q37,30 45,45 Q53,60 60,45"/><path d="M20,45 Q32,18 45,45 Q58,72 70,45" opacity="0.5"/><path d="M10,45 Q27,5 45,45 Q63,85 80,45" opacity="0.3"/></svg></div>
+    <div class="float-icon fi-5 sr sr-d3"><svg viewBox="0 0 55 55" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="1.5"><rect x="5" y="8" width="45" height="38" rx="3"/><line x1="5" y1="18" x2="50" y2="18"/><circle cx="12" cy="13" r="1.5" fill="rgba(255,255,255,0.5)"/><circle cx="18" cy="13" r="1.5" fill="rgba(255,255,255,0.5)"/><circle cx="24" cy="13" r="1.5" fill="rgba(255,255,255,0.5)"/><line x1="12" y1="26" x2="38" y2="26" opacity="0.4"/><line x1="12" y1="31" x2="30" y2="31" opacity="0.4"/><line x1="12" y1="36" x2="34" y2="36" opacity="0.4"/></svg></div>
+    <div class="float-icon fi-6 sr sr-d5"><svg viewBox="0 0 65 65" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="1.5"><circle cx="32" cy="20" r="4" fill="rgba(74,158,255,0.15)"/><circle cx="18" cy="35" r="3.5" fill="rgba(74,158,255,0.1)"/><circle cx="46" cy="35" r="3.5" fill="rgba(74,158,255,0.1)"/><circle cx="25" cy="50" r="3"/><circle cx="40" cy="50" r="3"/><line x1="32" y1="24" x2="20" y2="32"/><line x1="32" y1="24" x2="44" y2="32"/><line x1="20" y1="38" x2="26" y2="47"/><line x1="44" y1="38" x2="39" y2="47"/><line x1="28" y1="50" x2="37" y2="50"/></svg></div>
+    <div class="float-icon fi-7 sr sr-d2"><svg viewBox="0 0 75 75" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="1.5"><rect x="25" y="25" width="25" height="25" rx="2" fill="rgba(74,158,255,0.06)"/><line x1="37" y1="25" x2="37" y2="12"/><line x1="37" y1="50" x2="37" y2="63"/><line x1="25" y1="37" x2="12" y2="37"/><line x1="50" y1="37" x2="63" y2="37"/><circle cx="37" cy="12" r="2.5" fill="rgba(74,158,255,0.2)"/><circle cx="37" cy="63" r="2.5" fill="rgba(74,158,255,0.2)"/><circle cx="12" cy="37" r="2.5" fill="rgba(74,158,255,0.2)"/><circle cx="63" cy="37" r="2.5" fill="rgba(74,158,255,0.2)"/></svg></div>
+    <div class="float-icon fi-8 sr sr-d6"><svg viewBox="0 0 50 50" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="1.5"><circle cx="25" cy="25" r="8"/><circle cx="25" cy="25" r="4" fill="rgba(255,255,255,0.1)"/><line x1="25" y1="5" x2="25" y2="13"/><line x1="25" y1="37" x2="25" y2="45"/><line x1="5" y1="25" x2="13" y2="25"/><line x1="37" y1="25" x2="45" y2="25"/><line x1="11" y1="11" x2="16.5" y2="16.5"/><line x1="33.5" y1="33.5" x2="39" y2="39"/><line x1="39" y1="11" x2="33.5" y2="16.5"/><line x1="16.5" y1="33.5" x2="11" y2="39"/></svg></div>
+    <div class="float-icon fi-9 sr sr-d4"><svg viewBox="0 0 55 55" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="1.5"><ellipse cx="27" cy="14" rx="18" ry="6"/><path d="M9,14 L9,41 Q9,47 27,47 Q45,47 45,41 L45,14"/><path d="M9,24 Q9,30 27,30 Q45,30 45,24" opacity="0.5"/><path d="M9,33 Q9,39 27,39 Q45,39 45,33" opacity="0.3"/></svg></div>
+    <div class="float-icon fi-10 sr sr-d7"><svg viewBox="0 0 50 50" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="1.5"><rect x="14" y="14" width="22" height="22" rx="2" fill="rgba(74,158,255,0.06)"/><line x1="20" y1="14" x2="20" y2="6"/><line x1="25" y1="14" x2="25" y2="6"/><line x1="30" y1="14" x2="30" y2="6"/><line x1="20" y1="36" x2="20" y2="44"/><line x1="25" y1="36" x2="25" y2="44"/><line x1="30" y1="36" x2="30" y2="44"/><line x1="14" y1="20" x2="6" y2="20"/><line x1="14" y1="25" x2="6" y2="25"/><line x1="14" y1="30" x2="6" y2="30"/><line x1="36" y1="20" x2="44" y2="20"/><line x1="36" y1="25" x2="44" y2="25"/><line x1="36" y1="30" x2="44" y2="30"/></svg></div>
+  </div>
+
+  <div class="hero-logo" id="heroLogo"><div class="logo-mark"><span></span><span></span><span></span></div></div>
+  <div class="hero-heading">
+    <div class="hero-title" id="heroTitle">SYSTEMS × INTERFACES × PROTOTYPES</div>
+    <div class="hero-line" id="heroLine">FRONT-END × UI/UX × SYSTEMS</div>
+    <div class="hero-line-2" id="heroLine2">SOFTWARE + HARDWARE PROTOTYPING</div>
+  </div>
+  <div class="hero-subtitle-wrap">
+    <p class="hero-subtitle" id="heroSub">I build practical systems, clean interfaces, and hardware-connected prototypes for real-world workflows.</p>
+  </div>
+  <div class="hero-cta" id="heroCta">
+    <button class="cta-btn hoverable" data-scramble="VIEW BUILD PROOF" onclick="document.getElementById('projects').scrollIntoView({behavior:'smooth'})">
+      <span class="s-text">VIEW BUILD PROOF</span>
+      <span class="corner-bl"></span><span class="corner-br"></span>
+    </button>
+  </div>
+  <div class="scroll-indicator" id="scrollInd">
+    <div class="mouse-icon"></div>
+    <span class="scroll-text">SCROLL DOWN</span>
+  </div>
+</section>
+
+<!-- ═══ BUILD PROOF ═══ -->
+<section class="section build-proof" id="projects">
+  <div class="build-proof-header sr">
+    <div class="build-proof-header-left">
+      <div class="section-label">// 001</div>
+      <div class="section-title">SELECTED BUILD PROOF</div>
+      <div class="section-subtitle">I build software, interfaces, automation systems, and hardware-connected prototypes.</div>
+    </div>
+    <div class="company-logos">
+      <div class="company-logo-item hoverable">
+        <img src="https://z-cdn-media.chatglm.cn/files/7e87313a-fe52-42d2-9aac-3760df55356a.png?auth_key=1879749618-be60c57a66eb4aea83d98561c9788b5c-0-90eeaa2014294baba38506d6a7387ffc" alt="Global Standard Technology">
+        <span class="logo-label">Global Standard Technology</span>
+      </div>
+      <div class="company-logo-divider"></div>
+      <div class="company-logo-item hoverable">
+        <img src="https://z-cdn-media.chatglm.cn/files/71aa9cac-b5ec-4ddb-a358-e3c20bb92667.png?auth_key=1879749618-2401dda62478493f804ec62b213748c3-0-3c1098b0627a9813e3ce975609b62f01" alt="Al-Qahtani Pipe Coating Industries">
+        <span class="logo-label">Al-Qahtani Pipe Coating</span>
+      </div>
+      <div class="company-logo-divider"></div>
+      <div class="company-logo-item hoverable">
+        <img src="https://z-cdn-media.chatglm.cn/files/b44ab43a-dca2-46eb-9b40-d4382905ed1d.png?auth_key=1879749618-2b37b6722bba4bf4a57626b9beffee7b-0-5012f4fe8ef00a5796078130aedb2d6e" alt="GS1 Saudi Arabia">
+        <span class="logo-label">GS1 Saudi Arabia</span>
+      </div>
+    </div>
+  </div>
+  <div class="project-logos sr sr-d1">
+    <div class="project-logo-item hoverable"><span class="dot"></span>VISITORMG / VMS</div>
+    <div class="project-logo-item hoverable"><span class="dot"></span>ROBOT ARM SORTING</div>
+    <div class="project-logo-item hoverable"><span class="dot"></span>MES G-TRACK</div>
+    <div class="project-logo-item hoverable"><span class="dot"></span>WAREHOUSE DIGITAL TWIN</div>
+    <div class="project-logo-item hoverable"><span class="dot"></span>MINI-FARM SENSOR</div>
+    <div class="project-logo-item hoverable"><span class="dot"></span>WATER CENTRIFUGE</div>
+  </div>
+
+  <!-- Project 1 -->
+  <div class="project-card sr">
+    <div class="project-text">
+      <div class="project-tag sr sr-d1">WEB + MOBILE SYSTEM</div>
+      <div class="project-name sr sr-d2">VISITORMG / VMS</div>
+      <div class="project-desc sr sr-d3">A multi-role visitor management system with booking, QR/NFC check-in and check-out, guard scanning, employee approvals, admin dashboards, and visitor appointment flows.</div>
+      <button class="project-btn hoverable ch-hover sr sr-d4" data-scramble="VIEW CASE →"><span class="s-text">VIEW CASE →</span><div class="ch-box"><div class="ch-corner tl"></div><div class="ch-corner tr"></div><div class="ch-corner bl"></div><div class="ch-corner br"></div><div class="ch-border"></div></div></button>
+    </div>
+    <div class="project-mockup hoverable sr sr-d2" data-tilt>
+      <div class="mockup-crosshair tl"></div><div class="mockup-crosshair tr"></div><div class="mockup-crosshair bl"></div><div class="mockup-crosshair br"></div>
+      <div class="mockup-label">VMS-001</div><div class="mockup-hover-label">OPEN GALLERY</div>
+      <img src="https://z-cdn-media.chatglm.cn/files/67f99690-ea31-4552-837f-1217b500a873.png?auth_key=1879747636-0adfe2b488cf45aebe8e7adc1aaded5f-0-afdf7bfa84cc5ad45b576e2b92d3ee65" alt="Visitor Management System">
+    </div>
+  </div>
+
+  <!-- Project 2 -->
+  <div class="project-card sr">
+    <div class="project-text">
+      <div class="project-tag sr sr-d1">ROBOTICS + AUTOMATION</div>
+      <div class="project-name sr sr-d2">AUTO-SORTING CONVEYOR</div>
+      <div class="project-desc sr sr-d3">An Arduino-controlled robot arm and conveyor prototype using sensors, relays, and automation logic to detect and sort objects.</div>
+      <button class="project-btn hoverable ch-hover sr sr-d4" data-scramble="VIEW BUILD →"><span class="s-text">VIEW BUILD →</span><div class="ch-box"><div class="ch-corner tl"></div><div class="ch-corner tr"></div><div class="ch-corner bl"></div><div class="ch-corner br"></div><div class="ch-border"></div></div></button>
+    </div>
+    <div class="project-mockup hoverable sr sr-d2" data-tilt>
+      <div class="mockup-crosshair tl"></div><div class="mockup-crosshair tr"></div><div class="mockup-crosshair bl"></div><div class="mockup-crosshair br"></div>
+      <div class="mockup-label">ARM-SORT-002</div><div class="mockup-hover-label">VIEW BUILD</div>
+      <div class="dual-images">
+        <img src="https://z-cdn-media.chatglm.cn/files/6205f27f-9f02-454e-9b44-9240a9fb829c.png?auth_key=1879747636-4d084621e74f4f2bb5387cd839362b0b-0-9c6b209f6f8fec5300ca1a3362976921" alt="Robot Teach Interface">
+        <img src="https://z-cdn-media.chatglm.cn/files/8d590a98-0833-44f6-a313-ccd6c732837e.png?auth_key=1879747636-bc49ebba05814f3aa73f8fc3d0eceb34-0-a335d289fb44e403cc864cf23baba1f1" alt="Auto Sorting Robot System">
+      </div>
+    </div>
+  </div>
+
+  <!-- Project 3 -->
+  <div class="project-card sr">
+    <div class="project-text">
+      <div class="project-tag sr sr-d1">ASSET TRACKING</div>
+      <div class="project-name sr sr-d2">MES G-TRACK</div>
+      <div class="project-desc sr sr-d3">An asset tracking workflow with tags, subtags, master-data imports, verification flows, and structured asset lifecycle handling.</div>
+      <button class="project-btn hoverable ch-hover sr sr-d4" data-scramble="VIEW SYSTEM →"><span class="s-text">VIEW SYSTEM →</span><div class="ch-box"><div class="ch-corner tl"></div><div class="ch-corner tr"></div><div class="ch-corner bl"></div><div class="ch-corner br"></div><div class="ch-border"></div></div></button>
+    </div>
+    <div class="project-mockup hoverable sr sr-d2" data-tilt>
+      <div class="mockup-crosshair tl"></div><div class="mockup-crosshair tr"></div><div class="mockup-crosshair bl"></div><div class="mockup-crosshair br"></div>
+      <div class="mockup-label">MES-GTRK-003</div><div class="mockup-hover-label">VIEW SYSTEM</div>
+      <img src="https://z-cdn-media.chatglm.cn/files/d995993a-759e-4de2-9d43-ff3d7a801d74.png?auth_key=1879747636-91f90a04061c4d54a5e7ee0179ff64b8-0-b5a0f07d8a07a1ffb9b195418403ae11" alt="MES G-Track Asset Dashboard">
+    </div>
+  </div>
+
+  <!-- Project 4 -->
+  <div class="project-card sr">
+    <div class="project-text">
+      <div class="project-tag sr sr-d1">3D + LIVE DATA</div>
+      <div class="project-name sr sr-d2">WAREHOUSE DIGITAL TWIN</div>
+      <div class="project-desc sr sr-d3">A 3D warehouse software prototype showing machine status and live sensor data inside an interactive model.</div>
+      <button class="project-btn hoverable ch-hover sr sr-d4" data-scramble="OPEN GALLERY →"><span class="s-text">OPEN GALLERY →</span><div class="ch-box"><div class="ch-corner tl"></div><div class="ch-corner tr"></div><div class="ch-corner bl"></div><div class="ch-corner br"></div><div class="ch-border"></div></div></button>
+    </div>
+    <div class="project-mockup hoverable sr sr-d2" data-tilt>
+      <div class="mockup-crosshair tl"></div><div class="mockup-crosshair tr"></div><div class="mockup-crosshair bl"></div><div class="mockup-crosshair br"></div>
+      <div class="mockup-label">TWIN-3D-004</div><div class="mockup-hover-label">OPEN GALLERY</div>
+      <img src="https://z-cdn-media.chatglm.cn/files/ca7b3dad-5b46-47c5-b409-c0435c52d473.png?auth_key=1879747636-91f90a04061c4d54a5e7ee0179ff64b8-0-776ebda65a24a4f75031b11447ae0f81" alt="Warehouse Digital Twin">
+    </div>
+  </div>
+
+  <!-- Project 5 -->
+  <div class="project-card sr">
+    <div class="project-text">
+      <div class="project-tag sr sr-d1">COMPUTER VISION + IK</div>
+      <div class="project-name sr sr-d2">WIRELESS ROBOT ARM CONTROL</div>
+      <div class="project-desc sr sr-d3">A motion simulation translating live human arm movement into mechanical robot arm motion using tracking and inverse kinematics.</div>
+      <button class="project-btn hoverable ch-hover sr sr-d4" data-scramble="VIEW CASE →"><span class="s-text">VIEW CASE →</span><div class="ch-box"><div class="ch-corner tl"></div><div class="ch-corner tr"></div><div class="ch-corner bl"></div><div class="ch-corner br"></div><div class="ch-border"></div></div></button>
+    </div>
+    <div class="project-mockup hoverable sr sr-d2" data-tilt>
+      <div class="mockup-crosshair tl"></div><div class="mockup-crosshair tr"></div><div class="mockup-crosshair bl"></div><div class="mockup-crosshair br"></div>
+      <div class="mockup-label">IK-SIM-005</div><div class="mockup-hover-label">VIEW CASE</div>
+      <img src="https://z-cdn-media.chatglm.cn/files/25dde31a-0780-4a09-956a-c8187a30c0d1.png?auth_key=1879747636-ffcb984f82ba441da0b55b84cf12b596-0-c48fa84aa8b9c434173957b721c79f20" alt="Wireless Robot Arm Control">
+    </div>
+  </div>
+
+  <!-- Project 6 -->
+  <div class="project-card sr">
+    <div class="project-text">
+      <div class="project-tag sr sr-d1">IOT + WEB ALERTS</div>
+      <div class="project-name sr sr-d2">SENSOR ALERT SYSTEMS</div>
+      <div class="project-desc sr sr-d3">Arduino and Node.js sensor systems using soil, humidity, rain, gas, and heat sensors connected to live web alert screens.</div>
+      <button class="project-btn hoverable ch-hover sr sr-d4" data-scramble="VIEW BUILD →"><span class="s-text">VIEW BUILD →</span><div class="ch-box"><div class="ch-corner tl"></div><div class="ch-corner tr"></div><div class="ch-corner bl"></div><div class="ch-corner br"></div><div class="ch-border"></div></div></button>
+    </div>
+    <div class="project-mockup hoverable sr sr-d2" data-tilt style="background:#070b07">
+      <div class="mockup-crosshair tl"></div><div class="mockup-crosshair tr"></div><div class="mockup-crosshair bl"></div><div class="mockup-crosshair br"></div>
+      <div class="mockup-label">IOT-SNSR-006</div><div class="mockup-hover-label">VIEW BUILD</div>
+      <div class="sensor-grid">
+        <div class="sensor-left">
+          <div class="sensor-reading"><span class="label">SOIL MOISTURE</span><span class="value" style="color:var(--green)">65%</span></div>
+          <div class="sensor-reading"><span class="label">HUMIDITY</span><span class="value" style="color:var(--blue)">78%</span></div>
+          <div class="sensor-reading"><span class="label">RAIN LEVEL</span><span class="value" style="color:#eab308">12%</span></div>
+          <div class="sensor-reading"><span class="label">GAS INDEX</span><span class="value" style="color:#ef4444">5%</span></div>
+          <div class="sensor-reading"><span class="label">TEMPERATURE</span><span class="value" style="color:var(--green)">42°C</span></div>
+        </div>
+        <div class="sensor-alerts">
+          <div class="sensor-alert" style="background:rgba(52,211,153,0.04);border:1px solid rgba(52,211,153,0.12)"><div style="width:5px;height:5px;border-radius:50%;background:var(--green);flex-shrink:0"></div>ALL SYSTEMS NOMINAL</div>
+          <div class="sensor-alert" style="background:rgba(255,255,255,0.02);border:1px solid var(--border)">NODE.JS SERVER: ACTIVE</div>
+          <div class="sensor-alert" style="background:rgba(255,255,255,0.02);border:1px solid var(--border)">ARDUINO WiFi: CONNECTED</div>
+          <div class="sensor-alert" style="background:rgba(255,255,255,0.02);border:1px solid var(--border)">WEB ALERTS: STREAMING</div>
+          <div class="sensor-alert" style="background:rgba(234,179,8,0.04);border:1px solid rgba(234,179,8,0.12)"><div style="width:5px;height:5px;border-radius:50%;background:#eab308;flex-shrink:0"></div>RAIN SENSOR: LOW</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ EXPERIENCE / SKILLS ═══ -->
+<section class="experience-section">
+  <div class="sr">
+    <div class="section-label">// 002</div>
+    <div class="section-title">EXPERIENCE & CAPABILITIES</div>
+  </div>
+  <div class="exp-grid">
+    <div class="exp-col sr sr-d1">
+      <div class="exp-col-title">EXPERIENCE</div>
+      <div class="exp-item sr">
+        <div class="exp-num">01</div>
+        <div class="exp-date">2025 — PRESENT</div>
+        <div class="exp-role">Systems Embedded Engineer</div>
+        <div class="exp-company">Nartech Software Solutions</div>
+        <div class="exp-detail">Built robot arm auto-sorting conveyor prototype, VisitorMG/VMS workflows, MES G-Track asset flows, and warehouse digital twin prototype. Debugged wiring, voltage/current behavior, and hardware-software integration.</div>
+      </div>
+      <div class="exp-divider"></div>
+      <div class="exp-item sr sr-d2">
+        <div class="exp-num">02</div>
+        <div class="exp-date">2023 — 2024</div>
+        <div class="exp-role">UI/UX Designer / Front-End Developer</div>
+        <div class="exp-company">GS1 — The Global Standard for Barcodes</div>
+        <div class="exp-detail">Designed web and mobile interfaces in Figma and supported React Native implementation. Improved mobile app layout, branding, and usability for Google Play Store publications.</div>
+      </div>
+      <div class="exp-divider"></div>
+      <div class="exp-item sr sr-d3">
+        <div class="exp-num">03</div>
+        <div class="exp-date">2022 — 2025</div>
+        <div class="exp-role">STEM Graduate with Honors</div>
+        <div class="exp-company">Future Generation Philippine International School</div>
+        <div class="exp-detail">Graduated with honors; general averages above 90. UP AI Horizons Seminar attendee. PISAM Volleyball Athlete.</div>
+      </div>
+    </div>
+    <div class="exp-col sr sr-d2">
+      <div class="exp-col-title">SKILLS</div>
+      <div class="skill-group sr"><div class="skill-group-title">FRONT-END / MOBILE</div><div class="skill-list">React Native, HTML, CSS, JavaScript</div></div>
+      <div class="exp-divider"></div>
+      <div class="skill-group sr sr-d1"><div class="skill-group-title">BACK-END / DATA</div><div class="skill-list">Node.js, Python, MySQL, API documentation</div></div>
+      <div class="exp-divider"></div>
+      <div class="skill-group sr sr-d2"><div class="skill-group-title">HARDWARE / SENSORS</div><div class="skill-list">Arduino WiFi, relays, GND/VCC/V+, multimeter, sensor data</div></div>
+      <div class="exp-divider"></div>
+      <div class="skill-group sr sr-d3"><div class="skill-group-title">ROBOTICS / TRACKING</div><div class="skill-list">Inverse kinematics, MediaPipe, ArUco markers, automation logic</div></div>
+      <div class="exp-divider"></div>
+      <div class="skill-group sr sr-d4"><div class="skill-group-title">UI/UX / DESIGN</div><div class="skill-list">Figma, Canva, branding, layout design</div></div>
+      <div class="exp-divider"></div>
+      <div class="skill-group sr sr-d5"><div class="skill-group-title">RESEARCH / DOCS</div><div class="skill-list">Dataset preparation, user guides, workflow notes</div></div>
+    </div>
+    <div class="exp-col sr sr-d3">
+      <div class="exp-col-title">PERSONAL PROJECTS</div>
+      <div class="exp-project-item hoverable sr"><span class="exp-project-name">VisitorMG / VMS</span><button class="exp-project-btn hoverable" data-scramble="VIEW"><span class="s-text">VIEW</span></button></div>
+      <div class="exp-project-item hoverable sr sr-d1"><span class="exp-project-name">Robot Arm Auto-Sorting</span><button class="exp-project-btn hoverable" data-scramble="VIEW"><span class="s-text">VIEW</span></button></div>
+      <div class="exp-project-item hoverable sr sr-d2"><span class="exp-project-name">Wireless Robot Arm Simulation</span><button class="exp-project-btn hoverable" data-scramble="VIEW"><span class="s-text">VIEW</span></button></div>
+      <div class="exp-project-item hoverable sr sr-d3"><span class="exp-project-name">MES G-Track</span><button class="exp-project-btn hoverable" data-scramble="VIEW"><span class="s-text">VIEW</span></button></div>
+      <div class="exp-project-item hoverable sr sr-d4"><span class="exp-project-name">Mini-Farm Sensor Systems</span><button class="exp-project-btn hoverable" data-scramble="VIEW"><span class="s-text">VIEW</span></button></div>
+      <div class="exp-project-item hoverable sr sr-d5"><span class="exp-project-name">Water Purification Centrifuge</span><button class="exp-project-btn hoverable" data-scramble="VIEW"><span class="s-text">VIEW</span></button></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ GIANT FOOTER ═══ -->
+<section class="giant-name-section">
+  <div class="giant-name" id="giantName">MITCH ALINGAYAO</div>
+  <div class="giant-name-fill">MITCH ALINGAYAO</div>
+  <div class="footer-content sr">
+    <div class="footer-tagline">READY TO BUILD →</div>
+    <a href="mailto:mitchalingayao@gmail.com" class="footer-email hoverable">MITCHALINGAYAO@GMAIL.COM</a>
+    <div class="footer-socials">
+      <a href="#" class="footer-social hoverable" data-scramble="GITHUB ↗"><span class="s-text">GITHUB ↗</span></a>
+      <a href="#" class="footer-social hoverable" data-scramble="LINKEDIN ↗"><span class="s-text">LINKEDIN ↗</span></a>
+      <a href="#" class="footer-social hoverable" data-scramble="CV / RESUME"><span class="s-text">CV / RESUME</span></a>
+    </div>
+  </div>
+</section>
+
+<div style="height:52px"></div>
+
+<!-- ═══ BOTTOM HUD ═══ -->
+<footer class="bottom-bar">
+  <div class="bottom-left">
+    <div class="bottom-avatar">MA</div>
+    <div class="bottom-msg"><div class="bottom-msg-icon"></div><span>I build practical software and hardware systems</span></div>
+    <div class="bottom-tickers">
+      <div class="ticker"><div class="dot" style="background:var(--blue)"></div><span>VMS 2026</span></div>
+      <div class="ticker"><div class="dot" style="background:var(--green)"></div><span>ROBOT ARM 2026</span></div>
+      <div class="ticker"><div class="dot" style="background:var(--blue)"></div><span>MES G-TRACK 2026</span></div>
+      <div class="ticker"><div class="dot" style="background:var(--dim)"></div><span>WATER CENTRIFUGE 2023</span></div>
+    </div>
+  </div>
+  <div class="bottom-center"><span class="scroll-text">↓ SCROLL</span></div>
+  <div class="bottom-right">
+    <div class="hud-item">X: <span class="val" id="hudX">0000</span></div>
+    <div class="hud-item">Y: <span class="val" id="hudY">0000</span></div>
+    <div class="hud-item">SCR: <span class="val" id="hudScroll">0000</span></div>
+    <div class="hud-item">TIME: <span class="val" id="hudTime">00:00:00</span></div>
+  </div>
+</footer>
+
+<script>
+// ═══ GRAIN ═══
+(function(){
+  const c=document.getElementById('grain-canvas'),ctx=c.getContext('2d');
+  let w,h;
+  function resize(){w=c.width=window.innerWidth;h=c.height=window.innerHeight}
+  function draw(){const img=ctx.createImageData(w,h),d=img.data;for(let i=0;i<d.length;i+=4){const v=Math.random()*255;d[i]=d[i+1]=d[i+2]=v;d[i+3]=255}ctx.putImageData(img,0,0)}
+  window.addEventListener('resize',resize);resize();draw();setInterval(draw,130);
+})();
+
+// ═══ CUSTOM CURSOR ═══
+const cursor=document.getElementById('customCursor'),dot=document.getElementById('cursorDot'),glow=document.getElementById('cursorGlow');
+let mX=0,mY=0,cX=0,cY=0,dX=0,dY=0,gX=0,gY=0;
+document.addEventListener('mousemove',e=>{mX=e.clientX;mY=e.clientY});
+(function anim(){
+  cX+=(mX-cX)*0.14;cY+=(mY-cY)*0.14;
+  dX+=(mX-dX)*0.35;dY+=(mY-dY)*0.35;
+  gX+=(mX-gX)*0.05;gY+=(mY-gY)*0.05;
+  cursor.style.left=cX+'px';cursor.style.top=cY+'px';
+  dot.style.left=dX+'px';dot.style.top=dY+'px';
+  glow.style.left=gX+'px';glow.style.top=gY+'px';
+  requestAnimationFrame(anim);
+})();
+document.querySelectorAll('.hoverable,a,button').forEach(el=>{
+  el.addEventListener('mouseenter',()=>cursor.classList.add('hovering'));
+  el.addEventListener('mouseleave',()=>cursor.classList.remove('hovering'));
+});
+
+// ═══ HUD ═══
+const hX=document.getElementById('hudX'),hY=document.getElementById('hudY'),hS=document.getElementById('hudScroll'),hT=document.getElementById('hudTime');
+(function updHUD(){
+  hX.textContent=String(Math.round(mX)).padStart(4,'0');
+  hY.textContent=String(Math.round(mY)).padStart(4,'0');
+  hS.textContent=String(Math.round(window.scrollY)).padStart(4,'0');
+  hT.textContent=new Date().toTimeString().split(' ')[0];
+  requestAnimationFrame(updHUD);
+})();
+
+// ═══ FLOATING ICON PARALLAX ═══
+const fIcons=document.querySelectorAll('.float-icon'),iDepth=[0.04,0.06,0.05,0.07,0.045,0.055,0.065,0.05,0.06,0.048];
+document.addEventListener('mousemove',e=>{
+  const cx=window.innerWidth/2,cy=window.innerHeight/2;
+  fIcons.forEach((ic,i)=>{ic.style.transform=`translate(${(e.clientX-cx)*iDepth[i]}px,${(e.clientY-cy)*iDepth[i]}px)`});
+});
+
+// ═══ SCRAMBLE / DECRYPT TEXT ═══
+const SCRAMBLE_CHARS='!@#$%^&*()_+-=[]{}|;:<>?/~`0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+document.querySelectorAll('[data-scramble]').forEach(el=>{
+  const textEl=el.querySelector('.s-text');
+  if(!textEl)return;
+  const original=el.dataset.scramble;
+  let rafId=null;
+
+  el.addEventListener('mouseenter',()=>{
+    let iteration=0;
+    const len=original.length;
+    if(rafId)cancelAnimationFrame(rafId);
+    const animate=()=>{
+      textEl.textContent=original.split('').map((ch,i)=>{
+        if(ch===' ')return ' ';
+        if(i<iteration)return ch;
+        return SCRAMBLE_CHARS[Math.floor(Math.random()*SCRAMBLE_CHARS.length)];
+      }).join('');
+      iteration+=0.7;
+      if(iteration<len){rafId=requestAnimationFrame(animate)}
+      else{textEl.textContent=original;rafId=null}
+    };
+    animate();
+  });
+
+  el.addEventListener('mouseleave',()=>{
+    if(rafId){cancelAnimationFrame(rafId);rafId=null}
+    textEl.textContent=original;
+  });
+});
+
+// ═══ IMAGE TILT ═══
+document.querySelectorAll('[data-tilt]').forEach(card=>{
+  card.addEventListener('mousemove',e=>{
+    const rect=card.getBoundingClientRect();
+    const x=(e.clientX-rect.left)/rect.width-0.5;
+    const y=(e.clientY-rect.top)/rect.height-0.5;
+    card.style.transform=`perspective(1000px) rotateY(${x*6}deg) rotateX(${-y*6}deg) scale(1.01)`;
+  });
+  card.addEventListener('mouseleave',()=>{
+    card.style.transform='perspective(1000px) rotateY(0) rotateX(0) scale(1)';
+  });
+});
+
+// ═══ SCROLL REVEAL ═══
+gsap.registerPlugin(ScrollTrigger);
+
+const srObserver=new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){entry.target.classList.add('visible');srObserver.unobserve(entry.target)}
+  });
+},{threshold:0.08,rootMargin:'0px 0px -50px 0px'});
+document.querySelectorAll('.sr').forEach(el=>srObserver.observe(el));
+
+// Parallax
+gsap.utils.toArray('.project-mockup').forEach(m=>{
+  gsap.to(m,{y:-30,scrollTrigger:{trigger:m,start:'top bottom',end:'bottom top',scrub:1}});
+});
+gsap.to('#giantName',{x:-100,scrollTrigger:{trigger:'.giant-name-section',start:'top bottom',end:'bottom top',scrub:1}});
+fIcons.forEach((ic,i)=>{
+  gsap.to(ic,{y:-30-i*6,scrollTrigger:{trigger:'.hero',start:'top top',end:'bottom top',scrub:1}});
+});
+
+// ═══ HERO ENTRANCE — GSAP on IDs, no .sr conflict ═══
+gsap.from('#heroLogo',{opacity:0,y:20,duration:1,delay:0.2,ease:'power3.out'});
+gsap.from('#heroTitle',{opacity:0,y:20,duration:1,delay:0.4,ease:'power3.out'});
+gsap.from('#heroLine',{opacity:0,y:20,duration:1,delay:0.55,ease:'power3.out'});
+gsap.from('#heroLine2',{opacity:0,y:20,duration:1,delay:0.7,ease:'power3.out'});
+gsap.from('#heroSub',{opacity:0,y:20,duration:1,delay:0.9,ease:'power3.out'});
+gsap.from('#heroCta',{opacity:0,y:20,duration:1,delay:1.05,ease:'power3.out'});
+gsap.from('#scrollInd',{opacity:0,y:10,duration:1,delay:1.3,ease:'power3.out'});
+
+// Scroll indicator hide
+const sInd=document.getElementById('scrollInd');
+window.addEventListener('scroll',()=>{
+  sInd.style.opacity=window.scrollY>200?'0':'1';
+  sInd.style.pointerEvents=window.scrollY>200?'none':'auto';
+});
+
+// Section crosshairs
+document.querySelectorAll('.section,.experience-section,.giant-name-section').forEach(s=>{
+  s.style.position='relative';
+  ['tl','tr','bl','br'].forEach(p=>{
+    const m=document.createElement('div');m.className='mockup-crosshair '+p;
+    m.style.cssText='position:absolute;width:14px;height:14px;z-index:3;opacity:0.25;';
+    if(p==='tl'){m.style.top='0';m.style.left='0'}
+    if(p==='tr'){m.style.top='0';m.style.right='0'}
+    if(p==='bl'){m.style.bottom='0';m.style.left='0'}
+    if(p==='br'){m.style.bottom='0';m.style.right='0'}
+    s.appendChild(m);
+  });
+});
+
+// Nav smooth scroll
+document.querySelectorAll('.nav-link').forEach(l=>{
+  l.addEventListener('click',function(e){
+    if(this.getAttribute('href')&&this.getAttribute('href').startsWith('#')){
+      e.preventDefault();const t=document.querySelector(this.getAttribute('href'));
+      if(t)t.scrollIntoView({behavior:'smooth'});
+    }
+  });
+});
+
+// Bottom bar scroll progress
+window.addEventListener('scroll',()=>{
+  const p=document.documentElement.scrollHeight-window.innerHeight;
+  const pr=p>0?window.scrollY/p:0;
+  document.querySelector('.bottom-bar').style.borderImage=`linear-gradient(to right, rgba(74,158,255,${pr*0.5}) ${pr*100}%, rgba(255,255,255,0.1) ${pr*100}%) 1`;
+});
+
+window.addEventListener('load',()=>ScrollTrigger.refresh());
+</script>
+</body>
+</html>
