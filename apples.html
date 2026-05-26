@@ -106,11 +106,11 @@ body{
 .hero-logo .logo-mark span:nth-child(2){height:18px}
 .hero-logo .logo-mark span:nth-child(3){height:34px}
 .hero-heading{text-align:center;margin-bottom:8px;position:relative;z-index:2}
-.hero-title{font-family:var(--font-heading);font-size:clamp(13px,1.5vw,17px);letter-spacing:6px;color:var(--blue);font-weight:600;margin-bottom:20px;text-transform:uppercase}
-.hero-line{font-family:var(--font-display);font-size:clamp(36px,6vw,80px);letter-spacing:10px;line-height:1.05;color:var(--fg)}
-.hero-line-2{font-family:var(--font-display);font-size:clamp(30px,5vw,68px);letter-spacing:8px;line-height:1.1;color:var(--muted);margin-top:6px}
+.hero-title{font-family:var(--font-tech);font-size:clamp(13px,1.5vw,17px);letter-spacing:4px;color:var(--blue);font-weight:400;margin-bottom:20px;text-transform:uppercase}
+.hero-line{font-family:var(--font-tech);font-size:clamp(28px,5vw,64px);letter-spacing:4px;line-height:1.1;color:var(--fg);text-transform:uppercase}
+.hero-line-2{font-family:var(--font-tech);font-size:clamp(22px,4vw,52px);letter-spacing:3px;line-height:1.15;color:var(--muted);margin-top:6px;text-transform:uppercase}
 .hero-subtitle-wrap{text-align:center;margin-top:28px;position:relative;z-index:2}
-.hero-subtitle{font-family:var(--font-heading);font-size:clamp(14px,1.4vw,17px);color:var(--sub);max-width:640px;text-align:center;line-height:1.75;font-weight:500;letter-spacing:0.3px}
+.hero-subtitle{font-family:var(--font-tech);font-size:clamp(13px,1.3vw,15px);color:var(--sub);max-width:640px;text-align:center;line-height:1.75;font-weight:400;letter-spacing:1px}
 .hero-cta{margin-top:44px;position:relative;z-index:2}
 .cta-btn{position:relative;display:inline-flex;align-items:center;gap:10px;padding:16px 40px;background:transparent;border:1px solid var(--border-h);color:var(--fg);font-family:var(--font-tech);font-size:12px;letter-spacing:3px;cursor:none;transition:all 0.4s;text-transform:uppercase}
 .cta-btn::before,.cta-btn::after,.cta-btn .corner-bl,.cta-btn .corner-br{content:'';position:absolute;width:10px;height:10px}
@@ -132,7 +132,7 @@ body{
 .section-title{font-family:var(--font-display);font-size:clamp(40px,5.5vw,68px);letter-spacing:6px;color:var(--fg);margin-bottom:16px}
 .section-subtitle{font-family:var(--font-body);font-size:16px;color:var(--sub);max-width:620px;line-height:1.75;font-weight:400}
 
-.build-proof{padding-top:48px}
+.build-proof{padding-top:24px;max-width:1400px;margin:0 auto}
 .build-proof-header-left{position:relative;z-index:4}
 .build-proof-intro .section-title{white-space:nowrap}
 .company-logos{display:flex;align-items:center;justify-content:center;gap:clamp(20px,3vw,32px);flex-wrap:wrap}
@@ -142,51 +142,51 @@ body{
 .company-logo-item .logo-label{font-family:var(--font-tech);font-size:7px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;white-space:nowrap}
 .company-logo-divider{width:1px;height:36px;background:var(--border);flex-shrink:0}
 
-.project-logos{display:flex;flex-wrap:wrap;justify-content:center;gap:28px 48px;margin:48px 0 80px;padding:24px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
-.project-logo-item{font-family:var(--font-tech);font-size:11px;letter-spacing:2px;color:var(--muted);transition:color 0.3s;cursor:none}
+.project-logos{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:clamp(24px,4vw,56px);margin:0 0 clamp(64px,8vw,96px);padding:clamp(28px,4vw,40px) 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.project-logo-item{font-family:var(--font-tech);font-size:clamp(10px,1vw,12px);letter-spacing:3px;color:rgba(255,255,255,0.45);transition:color 0.3s;cursor:none;text-transform:uppercase;white-space:nowrap}
 .project-logo-item:hover{color:var(--fg)}
-.project-logo-item .dot{display:inline-block;width:5px;height:5px;background:var(--blue);border-radius:50%;margin-right:8px;vertical-align:middle}
 
-.project-card{display:grid;grid-template-columns:1fr 1.4fr;gap:56px;align-items:center;margin-bottom:120px;position:relative}
+.project-card{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,0.85fr);gap:clamp(32px,5vw,72px);align-items:center;margin-bottom:clamp(96px,12vw,140px);position:relative}
 .project-card:nth-child(even){direction:rtl}
 .project-card:nth-child(even)>*{direction:ltr}
-.project-text{padding-right:24px}
-.project-card:nth-child(even) .project-text{padding-right:0;padding-left:24px}
-.project-tag{font-family:var(--font-mono);font-size:10px;letter-spacing:3px;color:var(--blue);margin-bottom:14px;display:flex;align-items:center;gap:8px}
-.project-tag::before{content:'';width:18px;height:1px;background:var(--blue)}
-.project-name{font-family:var(--font-display);font-size:clamp(30px,3.8vw,52px);letter-spacing:4px;color:var(--fg);margin-bottom:18px;line-height:1.1}
-.project-desc{font-family:var(--font-body);font-size:15px;color:var(--sub);line-height:1.8;margin-bottom:30px;font-weight:400;max-width:460px}
+.project-text{display:flex;flex-direction:column;justify-content:center;padding:8px 0}
+.project-card:nth-child(even) .project-text{padding-left:clamp(8px,2vw,24px);padding-right:0}
+.project-card:nth-child(odd) .project-text{padding-right:clamp(8px,2vw,24px);padding-left:0}
+.project-tag{font-family:var(--font-tech);font-size:11px;letter-spacing:3px;color:var(--dim);margin-bottom:20px;text-transform:uppercase;line-height:1.5}
+.project-name{font-family:var(--font-display);font-size:clamp(32px,4.2vw,56px);letter-spacing:5px;color:var(--fg);margin-bottom:22px;line-height:1.05;text-transform:uppercase}
+.project-desc{font-family:var(--font-body);font-size:15px;color:var(--muted);line-height:1.85;margin-bottom:36px;font-weight:400;max-width:420px}
 
-.project-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 24px;border:1px solid var(--border-h);background:transparent;color:var(--muted);font-family:var(--font-tech);font-size:11px;letter-spacing:2.5px;cursor:none;transition:all 0.3s;position:relative;overflow:hidden;text-transform:uppercase}
-.project-btn::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(74,158,255,0.08),transparent);transform:translateX(-100%);transition:transform 0.5s}
-.project-btn:hover{color:var(--fg);border-color:var(--blue)}
-.project-btn:hover::after{transform:translateX(100%)}
+.project-btn{position:relative;display:inline-flex;align-items:center;padding:14px 32px;background:transparent;border:1px solid rgba(255,255,255,0.35);color:var(--fg);font-family:var(--font-tech);font-size:11px;letter-spacing:3px;cursor:none;transition:background 0.35s,border-color 0.35s,color 0.35s;text-transform:uppercase;width:fit-content}
+.project-btn::before,.project-btn::after,.project-btn .corner-bl,.project-btn .corner-br{content:'';position:absolute;width:10px;height:10px;transition:width 0.35s,height 0.35s}
+.project-btn::before{top:-1px;left:-1px;border-top:1px solid var(--fg);border-left:1px solid var(--fg)}
+.project-btn::after{top:-1px;right:-1px;border-top:1px solid var(--fg);border-right:1px solid var(--fg)}
+.project-btn .corner-bl{bottom:-1px;left:-1px;border-bottom:1px solid var(--fg);border-left:1px solid var(--fg)}
+.project-btn .corner-br{bottom:-1px;right:-1px;border-bottom:1px solid var(--fg);border-right:1px solid var(--fg)}
+.project-btn:hover{background:rgba(255,255,255,0.04);border-color:rgba(255,255,255,0.55)}
+.project-btn:hover::before,.project-btn:hover::after,.project-btn:hover .corner-bl,.project-btn:hover .corner-br{width:14px;height:14px}
 
-.project-mockup{position:relative;border:1px solid var(--border);border-radius:6px;overflow:hidden;aspect-ratio:16/10;background:var(--bg2);transform-style:preserve-3d;transition:transform 0.15s ease-out}
-.project-mockup img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.6s ease,filter 0.6s ease}
-.project-mockup:hover img{transform:scale(1.03);filter:brightness(1.1)}
-.mockup-crosshair{position:absolute;width:14px;height:14px;z-index:3}
-.mockup-crosshair.tl{top:10px;left:10px;border-top:1.5px solid var(--blue);border-left:1.5px solid var(--blue)}
-.mockup-crosshair.tr{top:10px;right:10px;border-top:1.5px solid var(--blue);border-right:1.5px solid var(--blue)}
-.mockup-crosshair.bl{bottom:10px;left:10px;border-bottom:1.5px solid var(--blue);border-left:1.5px solid var(--blue)}
-.mockup-crosshair.br{bottom:10px;right:10px;border-bottom:1.5px solid var(--blue);border-right:1.5px solid var(--blue)}
-.mockup-label{position:absolute;top:14px;right:44px;font-family:var(--font-tech);font-size:8px;letter-spacing:2px;color:var(--muted);opacity:0.7;z-index:3;background:rgba(0,0,0,0.6);padding:2px 8px;border-radius:2px}
-.mockup-hover-label{position:absolute;bottom:18px;right:18px;font-family:var(--font-tech);font-size:9px;letter-spacing:2px;color:var(--blue);border:1px solid rgba(74,158,255,0.4);padding:5px 12px;opacity:0;transition:opacity 0.3s;z-index:3;background:rgba(0,0,0,0.7);backdrop-filter:blur(8px)}
-.project-mockup:hover .mockup-hover-label{opacity:1}
-.project-mockup.has-carousel{aspect-ratio:auto;height:auto;display:flex;flex-direction:column}
-.mockup-carousel{display:flex;flex-direction:column;width:100%;cursor:pointer}
-.carousel-viewport{position:relative;width:100%;overflow:hidden;background:var(--bg2);aspect-ratio:16/10;max-height:min(520px,62vh);transition:aspect-ratio 0.55s cubic-bezier(0.16,1,0.3,1)}
+.project-mockup{position:relative;border:none;border-radius:0;overflow:visible;background:transparent;transform-style:preserve-3d;transition:transform 0.15s ease-out;padding:12px}
+.project-mockup-inner{position:relative;width:100%;aspect-ratio:16/10;overflow:hidden;background:var(--bg2);border:1px solid rgba(255,255,255,0.08)}
+.project-mockup-inner>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.project-mockup img{width:100%;height:100%;object-fit:cover;display:block;transition:filter 0.5s ease}
+.project-mockup:hover img{filter:brightness(1.06)}
+.mockup-crosshair{position:absolute;width:12px;height:12px;z-index:4;pointer-events:none}
+.mockup-crosshair.tl{top:0;left:0;border-top:1px solid rgba(255,255,255,0.85);border-left:1px solid rgba(255,255,255,0.85)}
+.mockup-crosshair.tr{top:0;right:0;border-top:1px solid rgba(255,255,255,0.85);border-right:1px solid rgba(255,255,255,0.85)}
+.mockup-crosshair.bl{bottom:0;left:0;border-bottom:1px solid rgba(255,255,255,0.85);border-left:1px solid rgba(255,255,255,0.85)}
+.mockup-crosshair.br{bottom:0;right:0;border-bottom:1px solid rgba(255,255,255,0.85);border-right:1px solid rgba(255,255,255,0.85)}
+.project-mockup.has-carousel{aspect-ratio:auto}
+.project-mockup.has-carousel .project-mockup-inner{aspect-ratio:16/10;max-height:min(520px,62vh)}
+.project-mockup.has-carousel .project-mockup-inner .mockup-carousel{height:100%;min-height:100%}
+.mockup-carousel{display:flex;flex-direction:column;width:100%;height:100%;cursor:pointer}
+.carousel-viewport{position:relative;width:100%;height:100%;overflow:hidden;background:var(--bg2);aspect-ratio:16/10;max-height:min(520px,62vh);transition:aspect-ratio 0.55s cubic-bezier(0.16,1,0.3,1)}
 .carousel-viewport .mockup-slide{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center;opacity:0;filter:blur(14px);transform:scale(1.02);transition:opacity 0.65s cubic-bezier(0.16,1,0.3,1),filter 0.65s cubic-bezier(0.16,1,0.3,1),transform 0.65s cubic-bezier(0.16,1,0.3,1);z-index:0;pointer-events:none}
 .carousel-viewport .mockup-slide.active{opacity:1;filter:blur(0);transform:scale(1);z-index:2}
 .carousel-viewport .mockup-slide.leaving{opacity:0;filter:blur(12px);transform:scale(0.99);z-index:1}
-.carousel-dots{position:absolute;top:12px;right:12px;display:flex;gap:7px;z-index:4;pointer-events:none;padding:6px 10px;background:rgba(0,0,0,0.55);border-radius:20px;border:1px solid var(--border)}
-.carousel-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.28);transition:background 0.4s,transform 0.4s,box-shadow 0.4s}
-.carousel-dot.active{background:var(--blue);transform:scale(1.2);box-shadow:0 0 10px rgba(74,158,255,0.55)}
-.carousel-status{flex-shrink:0;width:100%;font-family:var(--font-tech);font-size:clamp(11px,1.1vw,13px);letter-spacing:3px;color:var(--fg);text-transform:uppercase;text-align:center;padding:14px 20px;background:rgba(17,17,17,0.98);border-top:1px solid rgba(74,158,255,0.35);display:flex;align-items:center;justify-content:center;gap:10px;pointer-events:none}
-.carousel-status::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--blue);flex-shrink:0;box-shadow:0 0 12px rgba(74,158,255,0.7);animation:carouselPulse 2s ease-in-out infinite}
-.carousel-counter{color:var(--blue);font-weight:600}
-@keyframes carouselPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.4;transform:scale(0.88)}}
-.project-mockup.has-carousel .mockup-hover-label{display:none}
+.carousel-dots{position:absolute;bottom:14px;right:14px;display:flex;gap:6px;z-index:4;pointer-events:none}
+.carousel-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.25);transition:background 0.4s,transform 0.4s}
+.carousel-dot.active{background:var(--fg);transform:scale(1.15)}
+.carousel-status{display:none}
 .project-mockup.has-carousel:hover .mockup-slide.active{transform:scale(1)}
 
 .experience-section{padding:160px 60px 80px;position:relative}
@@ -257,10 +257,10 @@ body{
 
 @media(max-width:1200px){
   :root{--bar-pad-x:32px}
-  .project-card{grid-template-columns:1fr;gap:28px}
+  .project-card{grid-template-columns:1fr;gap:36px}
   .project-card:nth-child(even){direction:ltr}
-  .project-text{padding-right:0}
-  .project-card:nth-child(even) .project-text{padding-left:0}
+  .project-card .project-mockup{order:-1}
+  .project-card .project-text{padding-left:0;padding-right:0}
   .section,.experience-section{padding:80px 32px}
   .build-proof-intro{padding:var(--bar-min-h) var(--bar-pad-x) 40px}
   .build-proof-intro-stage{min-height:clamp(120px,28vw,180px)}
@@ -399,122 +399,128 @@ body{
 <!-- ═══ BUILD PROOF ═══ -->
 <section class="section build-proof">
   <div class="project-logos sr sr-d1">
-    <div class="project-logo-item hoverable"><span class="dot"></span>VISITORMG / VMS</div>
-    <div class="project-logo-item hoverable"><span class="dot"></span>ROBOT ARM SORTING</div>
-    <div class="project-logo-item hoverable"><span class="dot"></span>MES G-TRACK</div>
-    <div class="project-logo-item hoverable"><span class="dot"></span>WAREHOUSE DIGITAL TWIN</div>
-    <div class="project-logo-item hoverable"><span class="dot"></span>MINI-FARM SENSOR</div>
-    <div class="project-logo-item hoverable"><span class="dot"></span>WATER CENTRIFUGE</div>
+    <div class="project-logo-item hoverable">VISITORMG</div>
+    <div class="project-logo-item hoverable">ROBOT ARM</div>
+    <div class="project-logo-item hoverable">MES G-TRACK</div>
+    <div class="project-logo-item hoverable">DIGITAL TWIN</div>
+    <div class="project-logo-item hoverable">SENSOR IOT</div>
+    <div class="project-logo-item hoverable">GS1 MOBILE</div>
   </div>
 
   <!-- Project 1 -->
   <div class="project-card sr">
-    <div class="project-text">
-      <div class="project-tag sr sr-d1">WEB + MOBILE SYSTEM</div>
-      <div class="project-name sr sr-d2">VISITORMG / VMS</div>
-      <div class="project-desc sr sr-d3">A multi-role visitor management system with booking, QR/NFC check-in and check-out, guard scanning, employee approvals, admin dashboards, and visitor appointment flows.</div>
-      <button class="project-btn hoverable ch-hover sr sr-d4" data-scramble="VIEW CASE →"><span class="s-text">VIEW CASE →</span><div class="ch-box"><div class="ch-corner tl"></div><div class="ch-corner tr"></div><div class="ch-corner bl"></div><div class="ch-corner br"></div><div class="ch-border"></div></div></button>
-    </div>
-    <div class="project-mockup hoverable sr sr-d2" data-tilt>
+    <div class="project-mockup hoverable sr sr-d1" data-tilt>
       <div class="mockup-crosshair tl"></div><div class="mockup-crosshair tr"></div><div class="mockup-crosshair bl"></div><div class="mockup-crosshair br"></div>
-      <div class="mockup-label">VMS-001</div><div class="mockup-hover-label">OPEN GALLERY</div>
-      <img src="https://z-cdn-media.chatglm.cn/files/67f99690-ea31-4552-837f-1217b500a873.png?auth_key=1879747636-0adfe2b488cf45aebe8e7adc1aaded5f-0-afdf7bfa84cc5ad45b576e2b92d3ee65" alt="Visitor Management System">
+      <div class="project-mockup-inner">
+        <img src="https://z-cdn-media.chatglm.cn/files/67f99690-ea31-4552-837f-1217b500a873.png?auth_key=1879747636-0adfe2b488cf45aebe8e7adc1aaded5f-0-afdf7bfa84cc5ad45b576e2b92d3ee65" alt="Visitor Management System">
+      </div>
+    </div>
+    <div class="project-text">
+      <div class="project-tag sr sr-d2">WEB / MOBILE / QR-NFC</div>
+      <div class="project-name sr sr-d3">VISITORMG / VMS</div>
+      <div class="project-desc sr sr-d4">A multi-role visitor management system with booking, QR/NFC check-in and check-out, guard scanning, employee approvals, admin dashboards, and visitor appointment flows.</div>
+      <button class="project-btn hoverable sr sr-d5" data-scramble="VIEW CASE"><span class="s-text">VIEW CASE</span><span class="corner-bl"></span><span class="corner-br"></span></button>
     </div>
   </div>
 
   <!-- Project 2 -->
   <div class="project-card sr">
-    <div class="project-text">
-      <div class="project-tag sr sr-d1">ROBOTICS + AUTOMATION</div>
-      <div class="project-name sr sr-d2">AUTO-SORTING CONVEYOR</div>
-      <div class="project-desc sr sr-d3">An Arduino-controlled robot arm and conveyor prototype using sensors, relays, and automation logic to detect and sort objects.</div>
-      <button class="project-btn hoverable ch-hover sr sr-d4" data-scramble="VIEW BUILD →"><span class="s-text">VIEW BUILD →</span><div class="ch-box"><div class="ch-corner tl"></div><div class="ch-corner tr"></div><div class="ch-corner bl"></div><div class="ch-corner br"></div><div class="ch-border"></div></div></button>
-    </div>
-    <div class="project-mockup has-carousel hoverable sr sr-d2" data-tilt>
+    <div class="project-mockup has-carousel hoverable sr sr-d1" data-tilt>
       <div class="mockup-crosshair tl"></div><div class="mockup-crosshair tr"></div><div class="mockup-crosshair bl"></div><div class="mockup-crosshair br"></div>
-      <div class="mockup-label">ARM-SORT-002</div>
-      <div class="mockup-carousel" data-carousel>
-        <div class="carousel-viewport">
-          <img class="mockup-slide active" src="https://z-cdn-media.chatglm.cn/files/6205f27f-9f02-454e-9b44-9240a9fb829c.png?auth_key=1879747636-4d084621e74f4f2bb5387cd839362b0b-0-9c6b209f6f8fec5300ca1a3362976921" alt="Robot Teach Interface">
-          <img class="mockup-slide" src="https://z-cdn-media.chatglm.cn/files/8d590a98-0833-44f6-a313-ccd6c732837e.png?auth_key=1879747636-bc49ebba05814f3aa73f8fc3d0eceb34-0-a335d289fb44e403cc864cf23baba1f1" alt="Auto Sorting Robot System">
-          <div class="carousel-dots"><span class="carousel-dot active"></span><span class="carousel-dot"></span></div>
+      <div class="project-mockup-inner">
+        <div class="mockup-carousel" data-carousel>
+          <div class="carousel-viewport">
+            <img class="mockup-slide active" src="https://z-cdn-media.chatglm.cn/files/6205f27f-9f02-454e-9b44-9240a9fb829c.png?auth_key=1879747636-4d084621e74f4f2bb5387cd839362b0b-0-9c6b209f6f8fec5300ca1a3362976921" alt="Robot Teach Interface">
+            <img class="mockup-slide" src="https://z-cdn-media.chatglm.cn/files/8d590a98-0833-44f6-a313-ccd6c732837e.png?auth_key=1879747636-bc49ebba05814f3aa73f8fc3d0eceb34-0-a335d289fb44e403cc864cf23baba1f1" alt="Auto Sorting Robot System">
+            <div class="carousel-dots"><span class="carousel-dot active"></span><span class="carousel-dot"></span></div>
+          </div>
+          <div class="carousel-status"><span class="carousel-counter">1/2</span></div>
         </div>
-        <div class="carousel-status">Click to browse images · <span class="carousel-counter">1/2</span></div>
       </div>
+    </div>
+    <div class="project-text">
+      <div class="project-tag sr sr-d2">ROBOTICS / ARDUINO / AUTOMATION</div>
+      <div class="project-name sr sr-d3">AUTO-SORTING CONVEYOR</div>
+      <div class="project-desc sr sr-d4">An Arduino-controlled robot arm and conveyor prototype using sensors, relays, and automation logic to detect and sort objects.</div>
+      <button class="project-btn hoverable sr sr-d5" data-scramble="VIEW CASE"><span class="s-text">VIEW CASE</span><span class="corner-bl"></span><span class="corner-br"></span></button>
     </div>
   </div>
 
   <!-- Project 3 -->
   <div class="project-card sr">
-    <div class="project-text">
-      <div class="project-tag sr sr-d1">ASSET TRACKING</div>
-      <div class="project-name sr sr-d2">MES G-TRACK</div>
-      <div class="project-desc sr sr-d3">An asset tracking workflow with tags, subtags, master-data imports, verification flows, and structured asset lifecycle handling.</div>
-      <button class="project-btn hoverable ch-hover sr sr-d4" data-scramble="VIEW SYSTEM →"><span class="s-text">VIEW SYSTEM →</span><div class="ch-box"><div class="ch-corner tl"></div><div class="ch-corner tr"></div><div class="ch-corner bl"></div><div class="ch-corner br"></div><div class="ch-border"></div></div></button>
-    </div>
-    <div class="project-mockup has-carousel hoverable sr sr-d2" data-tilt>
+    <div class="project-mockup has-carousel hoverable sr sr-d1" data-tilt>
       <div class="mockup-crosshair tl"></div><div class="mockup-crosshair tr"></div><div class="mockup-crosshair bl"></div><div class="mockup-crosshair br"></div>
-      <div class="mockup-label">MES-GTRK-003</div>
-      <div class="mockup-carousel" data-carousel>
-        <div class="carousel-viewport">
-          <img class="mockup-slide active" src="https://i.postimg.cc/Xq6fVVdd/image-2026-05-26-154532108.png" alt="MES G-Track asset workflow">
-          <img class="mockup-slide" src="https://i.postimg.cc/1zzMT5r1/image-2026-05-26-154446591.png" alt="MES G-Track dashboard">
-          <div class="carousel-dots"><span class="carousel-dot active"></span><span class="carousel-dot"></span></div>
+      <div class="project-mockup-inner">
+        <div class="mockup-carousel" data-carousel>
+          <div class="carousel-viewport">
+            <img class="mockup-slide active" src="https://i.postimg.cc/Xq6fVVdd/image-2026-05-26-154532108.png" alt="MES G-Track asset workflow">
+            <img class="mockup-slide" src="https://i.postimg.cc/1zzMT5r1/image-2026-05-26-154446591.png" alt="MES G-Track dashboard">
+            <div class="carousel-dots"><span class="carousel-dot active"></span><span class="carousel-dot"></span></div>
+          </div>
+          <div class="carousel-status"><span class="carousel-counter">1/2</span></div>
         </div>
-        <div class="carousel-status">Click to browse images · <span class="carousel-counter">1/2</span></div>
       </div>
+    </div>
+    <div class="project-text">
+      <div class="project-tag sr sr-d2">MES / ASSET TRACKING / WORKFLOW</div>
+      <div class="project-name sr sr-d3">MES G-TRACK</div>
+      <div class="project-desc sr sr-d4">An asset tracking workflow with tags, subtags, master-data imports, verification flows, and structured asset lifecycle handling.</div>
+      <button class="project-btn hoverable sr sr-d5" data-scramble="VIEW CASE"><span class="s-text">VIEW CASE</span><span class="corner-bl"></span><span class="corner-br"></span></button>
     </div>
   </div>
 
   <!-- Project 4 -->
   <div class="project-card sr">
-    <div class="project-text">
-      <div class="project-tag sr sr-d1">3D + LIVE DATA</div>
-      <div class="project-name sr sr-d2">WAREHOUSE DIGITAL TWIN</div>
-      <div class="project-desc sr sr-d3">A 3D warehouse software prototype showing machine status and live sensor data inside an interactive model.</div>
-      <button class="project-btn hoverable ch-hover sr sr-d4" data-scramble="OPEN GALLERY →"><span class="s-text">OPEN GALLERY →</span><div class="ch-box"><div class="ch-corner tl"></div><div class="ch-corner tr"></div><div class="ch-corner bl"></div><div class="ch-corner br"></div><div class="ch-border"></div></div></button>
-    </div>
-    <div class="project-mockup hoverable sr sr-d2" data-tilt>
+    <div class="project-mockup hoverable sr sr-d1" data-tilt>
       <div class="mockup-crosshair tl"></div><div class="mockup-crosshair tr"></div><div class="mockup-crosshair bl"></div><div class="mockup-crosshair br"></div>
-      <div class="mockup-label">TWIN-3D-004</div><div class="mockup-hover-label">OPEN GALLERY</div>
-      <img src="https://z-cdn-media.chatglm.cn/files/ca7b3dad-5b46-47c5-b409-c0435c52d473.png?auth_key=1879747636-91f90a04061c4d54a5e7ee0179ff64b8-0-776ebda65a24a4f75031b11447ae0f81" alt="Warehouse Digital Twin">
+      <div class="project-mockup-inner">
+        <img src="https://z-cdn-media.chatglm.cn/files/ca7b3dad-5b46-47c5-b409-c0435c52d473.png?auth_key=1879747636-91f90a04061c4d54a5e7ee0179ff64b8-0-776ebda65a24a4f75031b11447ae0f81" alt="Warehouse Digital Twin">
+      </div>
+    </div>
+    <div class="project-text">
+      <div class="project-tag sr sr-d2">3D / LIVE DATA / DIGITAL TWIN</div>
+      <div class="project-name sr sr-d3">WAREHOUSE DIGITAL TWIN</div>
+      <div class="project-desc sr sr-d4">A 3D warehouse software prototype showing machine status and live sensor data inside an interactive model.</div>
+      <button class="project-btn hoverable sr sr-d5" data-scramble="VIEW CASE"><span class="s-text">VIEW CASE</span><span class="corner-bl"></span><span class="corner-br"></span></button>
     </div>
   </div>
 
   <!-- Project 5 -->
   <div class="project-card sr">
-    <div class="project-text">
-      <div class="project-tag sr sr-d1">COMPUTER VISION + IK</div>
-      <div class="project-name sr sr-d2">WIRELESS ROBOT ARM CONTROL</div>
-      <div class="project-desc sr sr-d3">A motion simulation translating live human arm movement into mechanical robot arm motion using tracking and inverse kinematics.</div>
-      <button class="project-btn hoverable ch-hover sr sr-d4" data-scramble="VIEW CASE →"><span class="s-text">VIEW CASE →</span><div class="ch-box"><div class="ch-corner tl"></div><div class="ch-corner tr"></div><div class="ch-corner bl"></div><div class="ch-corner br"></div><div class="ch-border"></div></div></button>
-    </div>
-    <div class="project-mockup hoverable sr sr-d2" data-tilt>
+    <div class="project-mockup hoverable sr sr-d1" data-tilt>
       <div class="mockup-crosshair tl"></div><div class="mockup-crosshair tr"></div><div class="mockup-crosshair bl"></div><div class="mockup-crosshair br"></div>
-      <div class="mockup-label">IK-SIM-005</div><div class="mockup-hover-label">VIEW CASE</div>
-      <img src="https://z-cdn-media.chatglm.cn/files/25dde31a-0780-4a09-956a-c8187a30c0d1.png?auth_key=1879747636-ffcb984f82ba441da0b55b84cf12b596-0-c48fa84aa8b9c434173957b721c79f20" alt="Wireless Robot Arm Control">
+      <div class="project-mockup-inner">
+        <img src="https://z-cdn-media.chatglm.cn/files/25dde31a-0780-4a09-956a-c8187a30c0d1.png?auth_key=1879747636-ffcb984f82ba441da0b55b84cf12b596-0-c48fa84aa8b9c434173957b721c79f20" alt="Wireless Robot Arm Control">
+      </div>
+    </div>
+    <div class="project-text">
+      <div class="project-tag sr sr-d2">COMPUTER VISION / IK / SIMULATION</div>
+      <div class="project-name sr sr-d3">WIRELESS ROBOT ARM CONTROL</div>
+      <div class="project-desc sr sr-d4">A motion simulation translating live human arm movement into mechanical robot arm motion using tracking and inverse kinematics.</div>
+      <button class="project-btn hoverable sr sr-d5" data-scramble="VIEW CASE"><span class="s-text">VIEW CASE</span><span class="corner-bl"></span><span class="corner-br"></span></button>
     </div>
   </div>
 
   <!-- Project 6 -->
   <div class="project-card sr">
-    <div class="project-text">
-      <div class="project-tag sr sr-d1">IOT + WEB ALERTS</div>
-      <div class="project-name sr sr-d2">SENSOR ALERT SYSTEMS</div>
-      <div class="project-desc sr sr-d3">Arduino and Node.js sensor systems using soil, humidity, rain, gas, and heat sensors connected to live web alert screens.</div>
-      <button class="project-btn hoverable ch-hover sr sr-d4" data-scramble="VIEW BUILD →"><span class="s-text">VIEW BUILD →</span><div class="ch-box"><div class="ch-corner tl"></div><div class="ch-corner tr"></div><div class="ch-corner bl"></div><div class="ch-corner br"></div><div class="ch-border"></div></div></button>
-    </div>
-    <div class="project-mockup has-carousel hoverable sr sr-d2" data-tilt>
+    <div class="project-mockup has-carousel hoverable sr sr-d1" data-tilt>
       <div class="mockup-crosshair tl"></div><div class="mockup-crosshair tr"></div><div class="mockup-crosshair bl"></div><div class="mockup-crosshair br"></div>
-      <div class="mockup-label">IOT-SNSR-006</div>
-      <div class="mockup-carousel" data-carousel>
-        <div class="carousel-viewport">
-          <img class="mockup-slide active" src="https://i.postimg.cc/BbwJTvpv/image-2026-05-26-154924694.png" alt="Sensor alert dashboard">
-          <img class="mockup-slide" src="https://i.postimg.cc/FsdvtNGJ/image-2026-05-26-155018555.png" alt="Sensor alert system interface">
-          <div class="carousel-dots"><span class="carousel-dot active"></span><span class="carousel-dot"></span></div>
+      <div class="project-mockup-inner">
+        <div class="mockup-carousel" data-carousel>
+          <div class="carousel-viewport">
+            <img class="mockup-slide active" src="https://i.postimg.cc/BbwJTvpv/image-2026-05-26-154924694.png" alt="Sensor alert dashboard">
+            <img class="mockup-slide" src="https://i.postimg.cc/FsdvtNGJ/image-2026-05-26-155018555.png" alt="Sensor alert system interface">
+            <div class="carousel-dots"><span class="carousel-dot active"></span><span class="carousel-dot"></span></div>
+          </div>
+          <div class="carousel-status"><span class="carousel-counter">1/2</span></div>
         </div>
-        <div class="carousel-status">Click to browse images · <span class="carousel-counter">1/2</span></div>
       </div>
+    </div>
+    <div class="project-text">
+      <div class="project-tag sr sr-d2">IOT / SENSORS / WEB ALERTS</div>
+      <div class="project-name sr sr-d3">SENSOR ALERT SYSTEMS</div>
+      <div class="project-desc sr sr-d4">Arduino and Node.js sensor systems using soil, humidity, rain, gas, and heat sensors connected to live web alert screens.</div>
+      <button class="project-btn hoverable sr sr-d5" data-scramble="VIEW CASE"><span class="s-text">VIEW CASE</span><span class="corner-bl"></span><span class="corner-br"></span></button>
     </div>
   </div>
 </section>
@@ -758,9 +764,9 @@ const srObserver=new IntersectionObserver((entries)=>{
 },{threshold:0.08,rootMargin:'0px 0px -50px 0px'});
 document.querySelectorAll('.sr').forEach(el=>srObserver.observe(el));
 
-// Parallax
+// Subtle mockup parallax (reference-style, minimal motion)
 gsap.utils.toArray('.project-mockup').forEach(m=>{
-  gsap.to(m,{y:-30,scrollTrigger:{trigger:m,start:'top bottom',end:'bottom top',scrub:1}});
+  gsap.to(m,{y:-16,scrollTrigger:{trigger:m,start:'top bottom',end:'bottom top',scrub:1}});
 });
 gsap.to('#giantName',{x:-100,scrollTrigger:{trigger:'.giant-name-section',start:'top bottom',end:'bottom top',scrub:1}});
 gsap.to('#dividerNameParallax',{x:-100,scrollTrigger:{trigger:'.build-proof-intro',start:'top bottom',end:'bottom top',scrub:1}});
